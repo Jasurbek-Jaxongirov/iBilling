@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:i_billing/api/mock_ibilling_service.dart';
+import 'package:i_billing/blocs/contract_cubit.dart';
 import 'package:i_billing/models/contract.dart';
 import 'package:i_billing/ui/android/components/calendar.dart';
 import 'package:i_billing/ui/theme/app_constants.dart';
@@ -26,74 +28,104 @@ class ContractsPage extends StatelessWidget {
             child: CustomCalendar(),
           ),
           Expanded(
-            child: FutureBuilder(
-              future: MockIBillingService().getContractResponse(),
-              builder: (ctx, snapshot) {
-                if (snapshot.error == null) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    );
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    final data = snapshot.data as List<Contract>;
-                    print(snapshot.error);
-                    if (data.length == 0) {
+            child: BlocBuilder<ContractCubit, List<ContractItem>>(
+              builder: (context, state) {
+                return FutureBuilder(
+                  future: ContractCubit().getContracts(),
+                  builder: (ctx, snapshot) {
+                    if (snapshot.error == null) {
+                      print(ContractCubit().getContracts());
+                      print(state);
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        );
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.done) {
+                        final data = snapshot.data as List<Contract>;
+                        print(snapshot.error);
+                        if (data.length == 0) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                  'assets/icons/empty-contracts.svg'),
+                              SizedBox(
+                                height: mediaQuery.size.height * 0.05,
+                              ),
+                              Text(
+                                'No contracts are made',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ],
+                          );
+                        }
+                        print('Worked');
+
+                        print(data.length);
+
+                        return SingleChildScrollView(child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                MaterialButton(
+                                  onPressed: () {},
+                                  child: const Text('Contract'),
+                                ),
+                                MaterialButton(
+                                  onPressed: () {},
+                                  child: const Text('Invoice'),
+                                ),
+
+                              ],
+                            ),
+
+                            ...data.map((element) => ContractItem(
+                                lastInvoice: element.lastInvoice,
+                                contractStatus:
+                                element.contractStatus))
+                                .toList(),
+                              // child: ListView.builder(
+                              //   itemCount: data.length,
+                              //   itemBuilder: (ctx, index) => Padding(
+                              //     padding: EdgeInsets.symmetric(
+                              //         horizontal: 16, vertical: 12),
+                              //     child: ContractItem(
+                              //       contractStatus:
+                              //       state[index].contractStatus,
+                              //       lastInvoice: state[index].lastInvoice,
+                              //     ),
+                              //   ),
+                              // ),
+
+                          ],
+                        ));
+                      }
+                    } else {
+                      print(snapshot.error);
+
+                      print('Failed to work');
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset('assets/icons/empty-contracts.svg'),
+                          Text(
+                            'An error has occurred!',
+                            style: Theme.of(context).textTheme.headline5,
+                          ),
                           SizedBox(
                             height: mediaQuery.size.height * 0.05,
                           ),
                           Text(
-                            'No contracts are made',
+                            'Sorry! Internal error has occured!',
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ],
                       );
                     }
-                    print('Worked');
 
-                    print(data.length);
-                    return Scrollbar(
-                      showTrackOnHover: true,
-                      isAlwaysShown: true,
-                      child: ListView.builder(
-                        itemCount: data.length,
-                        itemBuilder: (ctx, index) => Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
-                          child: ContractItem(
-                            contractStatus: data[index].contractStatus,
-                            lastInvoice: data[index].lastInvoice,
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                } else {
-                  print(snapshot.error);
-
-                  print('Failed to work');
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'An error has occurred!',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                      SizedBox(
-                        height: mediaQuery.size.height * 0.05,
-                      ),
-                      Text(
-                        'Sorry! Internal error has occured!',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ],
-                  );
-                }
-
-                return Container();
+                    return Container();
+                  },
+                );
               },
             ),
           ),

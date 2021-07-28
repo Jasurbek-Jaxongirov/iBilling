@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:i_billing/blocs/contract_cubit.dart';
 import 'package:i_billing/ui/android/contracts_page.dart';
 import 'package:i_billing/ui/android/history_page.dart';
 import 'package:i_billing/ui/theme/app_constants.dart';
@@ -15,12 +17,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => ContractCubit(),
+        )
+      ],
+  child: MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.darkTheme(),
       home: MyHomePage(title: 'iBilling'),
-    );
+    ),
+);
   }
 }
 

@@ -13,43 +13,29 @@ class ContractItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-     Row(
-       children: [
-         MaterialButton(
-           onPressed: () {},
-           child: const Text('Contract'),
-         ),
-         MaterialButton(
-           onPressed: () {},
-           child: const Text('Invoice'),
-         ),
-       ],
-     ),
-      Container(
-        width: double.infinity,
-        height: 148,
-        color: Constants.darkerColor,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                SvgPicture.asset('assets/icons/paper.svg'),
-                Text('№ $lastInvoice'),
-                Spacer(),
-                Chip(
-                  label: Text(
-                    contractStatus,
-                    style: const TextStyle(
-                      color: Color(0XFF49B7A5),
-                    ),
+    return Container(
+      width: double.infinity,
+      height: 148,
+      color: Constants.darkerColor,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              SvgPicture.asset('assets/icons/paper.svg'),
+              Text('№ $lastInvoice'),
+              Spacer(),
+              Chip(
+                label: Text(
+                  contractStatus,
+                  style: const TextStyle(
+                    color: Color(0XFF49B7A5),
                   ),
                 ),
-              ],
-            )
-          ],
-        ),
+              ),
+            ],
+          )
+        ],
       ),
-    ]);
+    );
   }
 }
