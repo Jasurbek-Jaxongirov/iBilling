@@ -11,6 +11,7 @@ class CustomCalendar extends StatefulWidget {
 
 class _CustomCalendarState extends State<CustomCalendar> {
   var pickedDate = DateTime.now();
+  var jiffy1 = Jiffy();
   var _isActive = false;
 
   @override

@@ -2,18 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:i_billing/api/mock_ibilling_service.dart';
-import 'package:i_billing/blocs/contract_cubit.dart';
-import 'package:i_billing/models/contract.dart';
-import 'package:i_billing/ui/android/components/calendar.dart';
-import 'package:i_billing/ui/theme/app_constants.dart';
+
+import '/blocs/contract_cubit.dart';
+import '/models/contract.dart';
+import '/ui/android/components/calendar.dart';
+import '/ui/theme/app_constants.dart';
 
 import 'components/contract_item.dart';
 
 class ContractsPage extends StatelessWidget {
+  const ContractsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final buttonTextStyle =
+        Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 15);
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -64,41 +69,56 @@ class ContractsPage extends StatelessWidget {
 
                         print(data.length);
 
-                        return SingleChildScrollView(child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                MaterialButton(
-                                  onPressed: () {},
-                                  child: const Text('Contract'),
-                                ),
-                                MaterialButton(
-                                  onPressed: () {},
-                                  child: const Text('Invoice'),
-                                ),
-
-                              ],
-                            ),
-
-                            ...data.map((element) => ContractItem(
-                                lastInvoice: element.lastInvoice,
-                                contractStatus:
-                                element.contractStatus))
-                                .toList(),
-                              // child: ListView.builder(
-                              //   itemCount: data.length,
-                              //   itemBuilder: (ctx, index) => Padding(
-                              //     padding: EdgeInsets.symmetric(
-                              //         horizontal: 16, vertical: 12),
-                              //     child: ContractItem(
-                              //       contractStatus:
-                              //       state[index].contractStatus,
-                              //       lastInvoice: state[index].lastInvoice,
-                              //     ),
-                              //   ),
-                              // ),
-
-                          ],
+                        return SingleChildScrollView(
+                            child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 16),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  MaterialButton(
+                                    onPressed: () {
+                                      ContractCubit().toggleButton(true);
+                                    },
+                                    child: Text(
+                                      'Contract',
+                                      style: buttonTextStyle,
+                                    ),
+                                    color: ContractCubit().isContractActive
+                                        ? Constants.lightGreenColor
+                                        : Colors.transparent,
+                                  ),
+                                  MaterialButton(
+                                    onPressed: () {
+                                      ContractCubit().toggleButton(false);
+                                    },
+                                    child: Text(
+                                      'Invoice',
+                                      style: buttonTextStyle,
+                                    ),
+                                    color: ContractCubit().isContractActive
+                                        ? Colors.transparent
+                                        : Constants.lightGreenColor,
+                                  ),
+                                ],
+                              ),
+                              ...data
+                                  .map(
+                                    (element) => Column(
+                                      children: [
+                                        ContractItem(
+                                          contract: element,
+                                        ),
+                                        const SizedBox(
+                                          height: 12,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                  .toList(),
+                            ],
+                          ),
                         ));
                       }
                     } else {

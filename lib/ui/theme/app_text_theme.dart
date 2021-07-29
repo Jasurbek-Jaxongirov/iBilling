@@ -7,6 +7,11 @@ class AppTextTheme {
       fontSize: 14,
       fontWeight: FontWeight.w500,
     ),
+    bodyText2: TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+    ),
     headline5: TextStyle(
       color: Colors.white,
       fontSize: 18,

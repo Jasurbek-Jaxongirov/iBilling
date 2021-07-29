@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:i_billing/blocs/contract_cubit.dart';
 import 'package:i_billing/ui/android/contracts_page.dart';
 import 'package:i_billing/ui/android/history_page.dart';
+import 'package:i_billing/ui/android/profile_page.dart';
 import 'package:i_billing/ui/theme/app_constants.dart';
 import 'package:i_billing/ui/theme/app_theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,13 +24,13 @@ class MyApp extends StatelessWidget {
           create: (_) => ContractCubit(),
         )
       ],
-  child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: AppTheme.darkTheme(),
-      home: MyHomePage(title: 'iBilling'),
-    ),
-);
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: AppTheme.darkTheme(),
+        home: MyHomePage(title: 'iBilling'),
+      ),
+    );
   }
 }
 
@@ -47,7 +48,7 @@ var pickedDate = DateTime.now();
 class _MyHomePageState extends State<MyHomePage> {
   var _index = 0;
   final pages = <Widget>[
-    ContractsPage(),
+    const ContractsPage(),
     HistoryPage(),
     Container(
       width: double.infinity,
@@ -59,11 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       height: double.infinity,
       color: Constants.darkestColor,
     ),
-    Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: Constants.darkestColor,
-    ),
+    const ProfilePage(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -117,7 +114,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(
                   fontSize: 18,
                   color: Theme.of(context).primaryColor,
-
                 ),
               ),
             ),
