@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:i_billing/ui/theme/app_constants.dart';
+import '/ui/theme/app_constants.dart';
 import 'day_container.dart';
 import 'package:jiffy/jiffy.dart';
 
 class CustomCalendar extends StatefulWidget {
+  const CustomCalendar({Key? key}) : super(key: key);
   @override
   _CustomCalendarState createState() => _CustomCalendarState();
 }
@@ -12,7 +13,6 @@ class CustomCalendar extends StatefulWidget {
 class _CustomCalendarState extends State<CustomCalendar> {
   var pickedDate = DateTime.now();
   var jiffy1 = Jiffy();
-  var _isActive = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +32,12 @@ class _CustomCalendarState extends State<CustomCalendar> {
                   Jiffy(pickedDate.toString()).format('MMMM, yyyy '),
                   style: Theme.of(context).textTheme.headline5,
                 ),
-                Spacer(),
+                const Spacer(),
                 IconButton(
                   onPressed: () {
                     setState(() {
                       pickedDate = pickedDate.subtract(
-                        Duration(days: 6),
+                        const Duration(days: 7),
                       );
                     });
                   },
@@ -46,7 +46,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                 IconButton(
                   onPressed: () {
                     setState(() {
-                      pickedDate = pickedDate.add(Duration(days: 6));
+                      pickedDate = pickedDate.add(const Duration(days: 7));
                     });
                   },
                   icon: SvgPicture.asset('assets/icons/right-arrow.svg'),
@@ -76,65 +76,3 @@ class _CustomCalendarState extends State<CustomCalendar> {
     );
   }
 }
-
-/*
-Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Column(
-            children: [
-              Row(
-                children: [
-                  Text(
-                    '${Jiffy(pickedDate.toString()).format("yyyy, MMMM ")}',
-                  ),
-                  Spacer(),
-                  IconButton(
-                      onPressed: () {
-
-                      },
-                      icon: Icon(Icons.arrow_back_ios)),
-                  IconButton(
-                      onPressed: () {
-
-                      },
-                      icon: Icon(Icons.arrow_forward_ios)),
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: constraints.maxWidth * 0.04693,
-                        vertical: constraints.maxHeight * 0.08108),
-                    width: constraints.maxWidth,
-                    height: constraints.maxHeight * 0.4594,
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        separatorBuilder: (_, index) {
-                          return SizedBox(
-                            width: 5,
-                          );
-                        },
-                        itemCount: 7,
-                        itemBuilder: (_, index) {
-                          return DayContainer(
-                            day: Jiffy(pickedDate
-                                    .add(Duration(days: index))
-                                    .toString())
-                                .format('E'),
-                            date: Jiffy(pickedDate
-                                    .add(Duration(days: index))
-                                    .toString())
-                                .format('dd'),
-                          );
-                        }),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-
- */

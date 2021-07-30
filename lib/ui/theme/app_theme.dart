@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:i_billing/ui/theme/app_constants.dart';
-import 'package:i_billing/ui/theme/app_text_theme.dart';
+import '/ui/theme/app_constants.dart';
+import '/ui/theme/app_text_theme.dart';
 
 class AppTheme {
   static ThemeData darkTheme() {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:i_billing/ui/theme/app_constants.dart';
+import '/ui/theme/app_constants.dart';
 
 class DayContainer extends StatefulWidget {
   final String day;
@@ -22,18 +22,17 @@ class _DayContainerState extends State<DayContainer> {
     final textStyle = Theme.of(context)
         .textTheme
         .bodyText1!
-        .copyWith(color: Color(0XFFD1D1D1));
+        .copyWith(color: const Color(0XFFD1D1D1));
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         setState(() {
           _isActive = !_isActive;
         });
       },
       child: Container(
-
         width: 46,
         // height: 72,
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
           color: _isActive ? Constants.lightGreenColor : Colors.transparent,
           borderRadius: const BorderRadius.all(Radius.circular(6.0)),
         ),

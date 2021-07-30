@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:i_billing/models/contract.dart';
-import 'package:i_billing/ui/theme/app_constants.dart';
+import '/models/contract.dart';
+import '/ui/theme/app_constants.dart';
 
 class ContractItem extends StatelessWidget {
   final Contract contract;
@@ -28,7 +28,7 @@ class ContractItem extends StatelessWidget {
                 '№ ${contract.lastInvoice}',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
-              Spacer(),
+              const Spacer(),
               Chip(
                 label: Text(
                   contract.contractStatus,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/ui/android/components/language_change_container.dart';
 import '/models/user.dart';
 import '/ui/android/components/profile_container.dart';
 import '/ui/theme/app_constants.dart';
@@ -26,6 +27,10 @@ class ProfilePage extends StatelessWidget {
                 phoneNumber: '+998 97 721 06 88',
                 email: 'predatorhunter041@gmail.com'),
           ),
+          const SizedBox(
+            height: 12,
+          ),
+          const LanguageChangeContainer(),
         ],
       ),
     );

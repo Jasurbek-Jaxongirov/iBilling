@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:i_billing/ui/theme/app_constants.dart';
+import '/ui/theme/app_constants.dart';
 
 class HistoryPage extends StatelessWidget {
+  const HistoryPage({Key? key}) : super(key: key);
   void _showDatePicker(BuildContext context) {
-    showDatePicker(context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(DateTime.now().add(Duration(days: 1000)).year),
-
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(DateTime.now().add(const Duration(days: 1000)).year),
     );
   }
 
@@ -29,21 +30,14 @@ class HistoryPage extends StatelessWidget {
                 children: [
                   Text(
                     'Date',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(
-                      color: const Color(0XFF999999),
-                    ),
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          color: const Color(0XFF999999),
+                        ),
                   ),
                   Row(
                     children: [
                       SizedBox(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width * 0.3093,
+                        width: MediaQuery.of(context).size.width * 0.3093,
                         child: MaterialButton(
                           color: Constants.darkColor,
                           onPressed: () => _showDatePicker(context),
@@ -51,15 +45,14 @@ class HistoryPage extends StatelessWidget {
                             children: [
                               Text(
                                 'From',
-                                style: Theme
-                                    .of(context)
+                                style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
                                     .copyWith(
-                                  color: const Color(0XFF999999),
-                                ),
+                                      color: const Color(0XFF999999),
+                                    ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               SvgPicture.asset('assets/icons/calendar-bold.svg')
                             ],
                           ),
@@ -68,10 +61,7 @@ class HistoryPage extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal:
-                            MediaQuery
-                                .of(context)
-                                .size
-                                .width * 0.02),
+                                MediaQuery.of(context).size.width * 0.02),
                         child: const Text(
                           ' - ',
                           style: TextStyle(
@@ -80,10 +70,7 @@ class HistoryPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width * 0.3093,
+                        width: MediaQuery.of(context).size.width * 0.3093,
                         child: MaterialButton(
                           color: Constants.darkColor,
                           onPressed: () => _showDatePicker(context),
@@ -91,15 +78,14 @@ class HistoryPage extends StatelessWidget {
                             children: [
                               Text(
                                 'To',
-                                style: Theme
-                                    .of(context)
+                                style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
                                     .copyWith(
-                                  color: const Color(0XFF999999),
-                                ),
+                                      color: const Color(0XFF999999),
+                                    ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               SvgPicture.asset('assets/icons/calendar-bold.svg')
                             ],
                           ),
@@ -116,17 +102,11 @@ class HistoryPage extends StatelessWidget {
                 children: [
                   SvgPicture.asset('assets/icons/empty-contracts.svg'),
                   SizedBox(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.05,
+                    height: MediaQuery.of(context).size.height * 0.05,
                   ),
                   Text(
                     'No contracts are made',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyText1,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ],
               ),
