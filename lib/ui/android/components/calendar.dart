@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '/blocs/filter_by_date/filter_by_date_bloc.dart';
 import '/ui/theme/app_constants.dart';
 import 'day_container.dart';
 import 'package:jiffy/jiffy.dart';
 
 class CustomCalendar extends StatefulWidget {
-  const CustomCalendar({Key? key}) : super(key: key);
+  const CustomCalendar({
+    Key? key,
+  }) : super(key: key);
   @override
   _CustomCalendarState createState() => _CustomCalendarState();
 }
 
 class _CustomCalendarState extends State<CustomCalendar> {
-  var pickedDate = DateTime.now();
+  DateTime pickedDate = DateTime(DateTime.now().year)
+      .subtract(Duration(days: (DateTime.now().weekday - 2)));
   var jiffy1 = Jiffy();
-
+  var _selectedIndex = -1;
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -60,14 +65,32 @@ class _CustomCalendarState extends State<CustomCalendar> {
                 ),
                 scrollDirection: Axis.horizontal,
                 itemCount: 6,
-                itemBuilder: (_, index) => DayContainer(
-                  day: Jiffy(
-                    pickedDate.add(Duration(days: index)).toString(),
-                  ).format('E'),
-                  date: Jiffy(
-                    pickedDate.add(Duration(days: index)).toString(),
-                  ).format('dd'),
-                ),
+                itemBuilder: (_, index) {
+                  final pickedIndexDay = pickedDate.add(Duration(days: index));
+                  final pickedIndexDate = pickedDate.add(Duration(days: index));
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = index;
+                        BlocProvider.of<FilterByDateBloc>(context,
+                                listen: false)
+                            .toggleClick(true);
+                        BlocProvider.of<FilterByDateBloc>(context,
+                                listen: false)
+                            .filteringDate = pickedIndexDay;
+                      });
+                    },
+                    child: DayContainer(
+                      isActive: _selectedIndex == index,
+                      day: Jiffy(
+                        pickedIndexDay,
+                      ).format('E'),
+                      date: Jiffy(
+                        pickedIndexDate,
+                      ).format('dd'),
+                    ),
+                  );
+                },
               ),
             ),
           ],

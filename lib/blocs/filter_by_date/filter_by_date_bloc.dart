@@ -10,10 +10,13 @@ part 'filter_by_date_state.dart';
 
 class FilterByDateBloc extends Bloc<FilterByDateEvent, FilterByDateState> {
   bool _isClicked = false;
-  DateTime _filteringByDate = DateTime.parse('2021-07-30 19:40:26.572236');
+  List<Contract> mockData = [];
+  DateTime _filteringByDate = DateTime.now();
   final List<Contract> _filteredItems = [];
-  DateTime get filteringByDate {
-    return _filteringByDate = DateTime.parse('2021-07-30 19:40:26.572236');
+
+  void set filteringDate(DateTime chosenTime) {
+    print('Entered set filtering date function');
+    _filteringByDate = chosenTime;
   }
 
   List<Contract> get filteredItems {
@@ -25,20 +28,23 @@ class FilterByDateBloc extends Bloc<FilterByDateEvent, FilterByDateState> {
     _isClicked = isClicked;
   }
 
-  Future<void> filterContracts() async {
-    final mockData = await MockIBillingService().getContractResponse();
+  Future<void> getMockData() async {
+    mockData = await MockIBillingService().getContractResponse();
+  }
+
+  void filterContracts() {
     mockData.forEach((contract) {
       print(contract);
-      if (DateTime.parse(contract.createdAt).day == filteringByDate.day &&
-          DateTime.parse(contract.createdAt).month == filteringByDate.month &&
-          DateTime.parse(contract.createdAt).year == filteringByDate.year &&
+      if (DateTime.parse(contract.createdAt).day == _filteringByDate.day &&
+          DateTime.parse(contract.createdAt).month == _filteringByDate.month &&
+          DateTime.parse(contract.createdAt).year == _filteringByDate.year &&
           DateTime.parse(contract.createdAt).weekday ==
-              filteringByDate.weekday) {
+              _filteringByDate.weekday) {
         print('Added a new contract');
 
         _filteredItems.add(contract);
       } else {
-        print('Not parsed');
+        print('Nothing related to the date has been found');
       }
     });
   }
@@ -52,10 +58,23 @@ class FilterByDateBloc extends Bloc<FilterByDateEvent, FilterByDateState> {
     FilterByDateEvent event,
   ) async* {
     if (event is ClickDateContainer) {
+      await getMockData();
+      print('Is Clicked changed $_isClicked');
       if (_isClicked == true) {
-        await filterContracts();
-        yield FilteringByDate(filteringDate: filteringByDate);
+        print('Worked isClicked area');
+        filterContracts();
+        yield FilteringByDate(filteringDate: _filteringByDate);
 
+        try {
+          yield FilteredByDate(contractsFilteredByDate: _filteredItems);
+        } catch (error) {
+          yield FailedToFilterByDate(error: error);
+        }
+      } else {
+        print('Came to no clicked place');
+        mockData.forEach((element) {
+          _filteredItems.add(element);
+        });
         try {
           yield FilteredByDate(contractsFilteredByDate: _filteredItems);
         } catch (error) {

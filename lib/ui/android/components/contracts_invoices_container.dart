@@ -5,20 +5,17 @@ import '/blocs/filter_by_date/filter_by_date_bloc.dart';
 import '../components/contract_item.dart';
 
 class ContractsAndIvoicesContainer extends StatelessWidget {
-  ContractsAndIvoicesContainer({
+  const ContractsAndIvoicesContainer({
     Key? key,
     required this.buttonTextStyle,
   }) : super(key: key);
 
   final TextStyle buttonTextStyle;
-  final bloc = FilterByDateBloc()..add(ClickDateContainer());
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FilterByDateBloc, FilterByDateState>(
-      bloc: bloc,
       builder: (ctx, state) {
-        print(ctx.toString());
-        bloc.toggleClick(true);
         if (state is FilteringByDate) {
           return const Center(
             child: CircularProgressIndicator(),

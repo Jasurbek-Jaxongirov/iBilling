@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:i_billing/blocs/filter_by_date/filter_by_date_bloc.dart';
 import '/ui/home.dart';
 import '/blocs/contracts_bloc/contracts_bloc_bloc.dart';
 import '/ui/theme/app_theme.dart';
@@ -15,9 +16,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => ContractsBlocBloc()
+          create: (_) => FilterByDateBloc()
             ..add(
-              LoadContractsEvent(),
+              ClickDateContainer(),
             ),
         )
       ],

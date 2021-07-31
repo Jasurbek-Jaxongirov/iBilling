@@ -24,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final _titles = ['Contracts', 'History', 'News', 'Saved', 'Profile'];
   var _index = 0;
   final pages = <Widget>[
-    const ContractsPage(),
+    ContractsPage(),
     const HistoryPage(),
     const NewsPage(),
     const SavedPage(),
