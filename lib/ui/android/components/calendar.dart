@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '/blocs/filter_by_date/filter_by_date_bloc.dart';
+import '/blocs/contracts/contracts_bloc.dart';
 import '/ui/theme/app_constants.dart';
 import 'day_container.dart';
 import 'package:jiffy/jiffy.dart';
@@ -15,8 +15,8 @@ class CustomCalendar extends StatefulWidget {
 }
 
 class _CustomCalendarState extends State<CustomCalendar> {
-  DateTime pickedDate = DateTime(DateTime.now().year)
-      .subtract(Duration(days: (DateTime.now().weekday - 2)));
+  DateTime pickedDate =
+      DateTime.now().subtract(Duration(days: (DateTime.now().weekday - 1)));
   var jiffy1 = Jiffy();
   var _selectedIndex = -1;
   @override
@@ -72,13 +72,9 @@ class _CustomCalendarState extends State<CustomCalendar> {
                     onTap: () {
                       setState(() {
                         _selectedIndex = index;
-                        BlocProvider.of<FilterByDateBloc>(context,
-                                listen: false)
-                            .toggleClick(true);
-                        BlocProvider.of<FilterByDateBloc>(context,
-                                listen: false)
-                            .filteringDate = pickedIndexDay;
                       });
+                      BlocProvider.of<ContractsBloc>(context)
+                          .add(FilterContractsByDate());
                     },
                     child: DayContainer(
                       isActive: _selectedIndex == index,

@@ -8,6 +8,7 @@ import '/ui/android/history_page.dart';
 import '/ui/android/profile_page.dart';
 import '/ui/theme/app_constants.dart';
 import 'android/saved_page.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -21,10 +22,10 @@ class MyHomePage extends StatefulWidget {
 var pickedDate = DateTime.now();
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _titles = ['Contracts', 'History', 'News', 'Saved', 'Profile'];
+  final _titles = ['contract'.tr(), 'History', 'News', 'Saved', 'Profile'];
   var _index = 0;
   final pages = <Widget>[
-    ContractsPage(),
+    const ContractsPage(),
     const HistoryPage(),
     const NewsPage(),
     const SavedPage(),

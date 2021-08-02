@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:i_billing/blocs/filter_by_date/filter_by_date_bloc.dart';
+import '/blocs/contracts/contracts_bloc.dart';
 import '/ui/home.dart';
-import '/blocs/contracts_bloc/contracts_bloc_bloc.dart';
 import '/ui/theme/app_theme.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
+  runApp(
+    EasyLocalization(
+        supportedLocales: const [
+          Locale('uz'),
+          Locale('en', 'US'),
+          Locale('ru')
+        ],
+        path:
+            'assets/translations', // <-- change the path of the translation files
+        // fallbackLocale: const Locale('ru'),
+        child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,13 +30,16 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => FilterByDateBloc()
+          create: (_) => ContractsBloc()
             ..add(
-              ClickDateContainer(),
+              LoadContracts(),
             ),
         )
       ],
       child: MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         debugShowCheckedModeBanner: false,
         title: 'iBilling',
         theme: AppTheme.darkTheme(),
