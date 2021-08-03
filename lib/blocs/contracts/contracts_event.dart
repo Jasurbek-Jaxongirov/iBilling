@@ -3,7 +3,8 @@ part of 'contracts_bloc.dart';
 class LoadContracts extends ContractsEvent {}
 
 class FilterContractsByDate extends ContractsEvent {
-  FilterContractsByDate();
+  final String pickedDateString;
+  FilterContractsByDate(this.pickedDateString);
 }
 
 @immutable

@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '/ui/android/news_page.dart';
-import '/ui/android/contracts_page.dart';
-import '/ui/android/history_page.dart';
-import '/ui/android/profile_page.dart';
+import '/ui/screens/filters_screen.dart';
 import '/ui/theme/app_constants.dart';
-import 'android/saved_page.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'android/components/choice_alert_dialog.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -22,24 +18,14 @@ class MyHomePage extends StatefulWidget {
 var pickedDate = DateTime.now();
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _titles = ['contract'.tr(), 'History', 'News', 'Saved', 'Profile'];
   var _index = 0;
-  final pages = <Widget>[
-    const ContractsPage(),
-    const HistoryPage(),
-    const NewsPage(),
-    const SavedPage(),
-    const ProfilePage(),
-  ];
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Constants.darkestColor,
       systemNavigationBarColor: Constants.darkestColor,
     ));
-    print(DateTime.now().toString());
-    final customDateTime = DateTime.parse('2021-07-30 10:52:55.927277');
-    print(customDateTime.weekday);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -55,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: MediaQuery.of(context).size.width * 0.032,
               ),
               Text(
-                _titles[_index],
+                Constants.titles[_index],
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                 ),
@@ -66,7 +52,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ? []
               : [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(FiltersScreen.routeName);
+                    },
                     padding: const EdgeInsets.all(0.0),
                     icon: SvgPicture.asset(
                       'assets/icons/filter-bold.svg',
@@ -90,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
         ),
-        body: pages[_index],
+        body: Constants.pages[_index],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Constants.darkestColor,
           type: BottomNavigationBarType.fixed,
@@ -102,131 +90,60 @@ class _MyHomePageState extends State<MyHomePage> {
           onTap: (passedIndex) async {
             if (passedIndex == 2) {
               await showDialog(
-                  useSafeArea: true,
-                  barrierDismissible: false,
-                  barrierColor: const Color(0xFF0C0C0C).withOpacity(0.8),
-                  context: context,
-                  builder: (ctx) {
-                    return AlertDialog(
-                      titlePadding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 24),
-                      actionsPadding:
-                          const EdgeInsets.symmetric(horizontal: 20),
-                      backgroundColor: Constants.darkColor,
-                      title: Text(
-                        'What would you like to create?',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5!
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      actions: [
-                        MaterialButton(
-                          color: const Color(0xFF4E4E4E),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                  'assets/icons/contract-paper.svg'),
-                              Text(
-                                'Contract',
-                                style: Theme.of(context).textTheme.headline5,
-                              ),
-                            ],
-                          ),
-                        ),
-                        MaterialButton(
-                          color: const Color(0xFF4E4E4E),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                  'assets/icons/invoice-paper.svg'),
-                              Text(
-                                'Invoice',
-                                style: Theme.of(context).textTheme.headline5,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  });
+                useSafeArea: true,
+                barrierDismissible: false,
+                barrierColor: const Color(0xFF0C0C0C).withOpacity(0.8),
+                context: context,
+                builder: (ctx) {
+                  return const ChoiceAlertDialog();
+                },
+              );
             }
-
             setState(() {
               _index = passedIndex;
             });
           },
           items: [
             BottomNavigationBarItem(
-              label: 'Contracts',
-              icon: _index == 0
-                  ? SvgPicture.asset(
-                      'assets/icons/contracts-bold.svg',
-                      color: const Color(0XFFF2F2F2),
-                    )
-                  : SvgPicture.asset(
-                      'assets/icons/contracts-light.svg',
-                      color: const Color(0XFFA6A6A6),
-                    ),
+              label: Constants.titles[0],
+              icon: SvgPicture.asset(
+                _index == 0
+                    ? 'assets/icons/contracts-bold.svg'
+                    : 'assets/icons/contracts-light.svg',
+              ),
               tooltip: 'Contracts',
             ),
             BottomNavigationBarItem(
-              label: 'History',
-              icon: _index == 1
-                  ? SvgPicture.asset(
-                      'assets/icons/time-circle-bold.svg',
-                      color: const Color(0XFFF2F2F2),
-                    )
-                  : SvgPicture.asset(
-                      'assets/icons/time-circle-light.svg',
-                      color: const Color(0XFFA6A6A6),
-                    ),
+              label: Constants.titles[1],
+              icon: SvgPicture.asset(
+                _index == 1
+                    ? 'assets/icons/time-circle-bold.svg'
+                    : 'assets/icons/time-circle-light.svg',
+              ),
               tooltip: 'History',
             ),
             BottomNavigationBarItem(
-              label: 'News',
-              icon: _index == 2
-                  ? SvgPicture.asset(
-                      'assets/icons/plus-bold.svg',
-                      color: const Color(0XFFF2F2F2),
-                    )
-                  : SvgPicture.asset(
-                      'assets/icons/plus-light.svg',
-                      color: const Color(0XFFA6A6A6),
-                    ),
+              label: Constants.titles[2],
+              icon: SvgPicture.asset(
+                _index == 2
+                    ? 'assets/icons/plus-bold.svg'
+                    : 'assets/icons/plus-light.svg',
+              ),
               tooltip: 'News',
             ),
             BottomNavigationBarItem(
-              label: 'Saved',
-              icon: _index == 3
-                  ? SvgPicture.asset(
-                      'assets/icons/bookmark-bold.svg',
-                      color: const Color(0XFFF2F2F2),
-                    )
-                  : SvgPicture.asset(
-                      'assets/icons/bookmark-light.svg',
-                      color: const Color(0XFFA6A6A6),
-                    ),
+              label: Constants.titles[3],
+              icon: SvgPicture.asset(_index == 3
+                  ? 'assets/icons/bookmark-bold.svg'
+                  : 'assets/icons/bookmark-light.svg'),
             ),
             BottomNavigationBarItem(
-              label: 'Profile',
-              icon: _index == 4
-                  ? SvgPicture.asset(
-                      'assets/icons/profile-bold.svg',
-                      color: const Color(0XFFF2F2F2),
-                    )
-                  : SvgPicture.asset(
-                      'assets/icons/profile-light.svg',
-                      color: const Color(0XFFA6A6A6),
-                    ),
-            ),
+                label: Constants.titles[4],
+                icon: SvgPicture.asset(
+                  _index == 4
+                      ? 'assets/icons/profile-bold.svg'
+                      : 'assets/icons/profile-light.svg',
+                )),
           ],
         ),
       ),

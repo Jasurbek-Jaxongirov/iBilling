@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '/ui/theme/app_constants.dart';
 import '/blocs/contracts/contracts_bloc.dart';
-// import '/blocs/contracts_bloc/contracts_bloc_bloc.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import '../components/contract_item.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ContractsAndIvoicesContainer extends StatefulWidget {
   const ContractsAndIvoicesContainer({
@@ -25,12 +24,14 @@ class _ContractsAndIvoicesContainerState
   Widget build(BuildContext context) {
     return BlocBuilder<ContractsBloc, ContractsState>(
       builder: (ctx, state) {
-        if (state is LoadingContractsState) {
+        if (state is LoadingContractsState ||
+            state is ContractsInitialState ||
+            state is FilteringContractsByDate) {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state is LoadedContractsState) {
-          print('Worked');
+        } else if (state is LoadedContractsState ||
+            state is FilteredContractsByDate) {
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -40,124 +41,71 @@ class _ContractsAndIvoicesContainerState
                     children: [
                       MaterialButton(
                         onPressed: () {
-                          setState(() {
-                            context.locale = const Locale('ru');
-                          });
-                          // ContractCubit().toggleButton(true);
+                          setState(() {});
                         },
                         child: Text(
                           'contract'.tr(),
                           style: widget.buttonTextStyle,
                         ),
-                        // color: ContractCubit().isContractActive
-                        // ? Constants.lightGreenColor
-                        // : Colors.transparent,
                       ),
                       MaterialButton(
                         onPressed: () {
-                          setState(() {
-                            context.locale = const Locale('uz');
-                          });
-                          // ContractCubit().toggleButton(false);
+                          setState(() {});
                         },
                         child: Text(
-                          'Invoice',
+                          Constants.invoice,
                           style: widget.buttonTextStyle,
                         ),
-                        // color: ContractCubit().isContractActive
-                        // ? Colors.transparent
-                        // : Constants.lightGreenColor,
                       ),
                     ],
                   ),
-                  ...state.contracts
-                      .map(
-                        (element) => Column(
-                          children: [
-                            ContractItem(
-                              contract: element,
-                            ),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                          ],
-                        ),
-                      )
-                      .toList(),
+                  if (state is LoadedContractsState)
+                    ...state.contracts
+                        .map(
+                          (element) => Column(
+                            children: [
+                              ContractItem(
+                                contract: element,
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList()
+                  else if (state is FilteredContractsByDate)
+                    ...state.filteredContracts
+                        .map(
+                          (element) => Column(
+                            children: [
+                              ContractItem(
+                                contract: element,
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList(),
                 ],
               ),
             ),
           );
-        } else if (state is FailedToLoadContractsState) {
+        } else if (state is FailedToLoadContractsState ||
+            state is FailedToFilterContractsByDate) {
           return Center(
-            child: Text('${state.error}'),
-          );
-        } else if (state is FilteringContractsByDate) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is FilteredContractsByDate) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      MaterialButton(
-                        onPressed: () {
-                          setState(() {
-                            context.locale = const Locale('ru');
-                          });
-                          // ContractCubit().toggleButton(true);
-                        },
-                        child: Text(
-                          'contract'.tr(),
-                          style: widget.buttonTextStyle,
-                        ),
-                        // color: ContractCubit().isContractActive
-                        // ? Constants.lightGreenColor
-                        // : Colors.transparent,
-                      ),
-                      MaterialButton(
-                        onPressed: () {
-                          setState(() {
-                            context.locale = const Locale('uz');
-                          });
-                          // ContractCubit().toggleButton(false);
-                        },
-                        child: Text(
-                          'Invoice',
-                          style: widget.buttonTextStyle,
-                        ),
-                        // color: ContractCubit().isContractActive
-                        // ? Colors.transparent
-                        // : Constants.lightGreenColor,
-                      ),
-                    ],
-                  ),
-                  ...state.filteredContracts
-                      .map(
-                        (element) => Column(
-                          children: [
-                            ContractItem(
-                              contract: element,
-                            ),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                          ],
-                        ),
-                      )
-                      .toList(),
-                ],
-              ),
+            child: Text(
+              state is FailedToLoadContractsState
+                  ? '${state.error}'
+                  : state is FailedToFilterContractsByDate
+                      ? '${state.error}'
+                      : 'Sorry, an internal error occured!',
+              textAlign: TextAlign.center,
             ),
           );
-        } else if (state is FailedToFilterContractsByDate) {
-          print('failed to filter');
         }
-        print('Failed');
         return Container();
       },
     );

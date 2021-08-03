@@ -68,13 +68,16 @@ class _CustomCalendarState extends State<CustomCalendar> {
                 itemBuilder: (_, index) {
                   final pickedIndexDay = pickedDate.add(Duration(days: index));
                   final pickedIndexDate = pickedDate.add(Duration(days: index));
+
                   return InkWell(
                     onTap: () {
                       setState(() {
                         _selectedIndex = index;
                       });
-                      BlocProvider.of<ContractsBloc>(context)
-                          .add(FilterContractsByDate());
+                      BlocProvider.of<ContractsBloc>(context).setDate =
+                          pickedIndexDay.toString();
+                      BlocProvider.of<ContractsBloc>(context).add(
+                          FilterContractsByDate(pickedIndexDay.toString()));
                     },
                     child: DayContainer(
                       isActive: _selectedIndex == index,
@@ -84,6 +87,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
                       date: Jiffy(
                         pickedIndexDate,
                       ).format('dd'),
+                      index: index,
+                      selectedIndex: _selectedIndex,
                     ),
                   );
                 },

@@ -1,3 +1,9 @@
 {
-    "contract": "Shartnoma"
+    "contract": "Shartnoma",
+    "history": "Tarix",
+    "news": "Yangilar",
+    "saved": "Saqlanganlar",
+    "profile": "Shaxsiy Sahifa",
+    "invoice": "Hisob-faktura",
+    "filter": "Filter"
 }

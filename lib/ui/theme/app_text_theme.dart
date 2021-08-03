@@ -17,5 +17,10 @@ class AppTextTheme {
       fontSize: 18,
       fontWeight: FontWeight.w700,
     ),
+    headline4: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontWeight: FontWeight.w700,
+    ),
   );
 }

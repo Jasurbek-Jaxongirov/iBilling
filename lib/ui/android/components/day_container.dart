@@ -5,11 +5,15 @@ class DayContainer extends StatelessWidget {
   final String day;
   final String date;
   final isActive;
+  final int selectedIndex;
+  final int index;
   const DayContainer({
     Key? key,
     required this.day,
     required this.date,
     required this.isActive,
+    required this.selectedIndex,
+    required this.index,
   }) : super(key: key);
 
   @override

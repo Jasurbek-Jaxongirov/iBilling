@@ -10,28 +10,35 @@ part 'contracts_state.dart';
 
 class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   List<Contract> mockData = [];
-
-  List<Contract> _filteredItems = [];
-
-  DateTime filteringTime = DateTime.now();
-
-  List<Contract> get filteredItems {
-    return _filteredItems;
-  }
+  late String _date;
+  List<Contract> filteredItems = [];
 
   Future<void> getMockData() async {
     mockData = await MockIBillingService().getContractResponse();
   }
 
+  void set setDate(String param) {
+    _date = param;
+  }
+
+  String get getDate {
+    return _date;
+  }
+
   Future<void> fetchContractsByDate(DateTime time) async {
+    filteredItems = [];
     await getMockData();
     mockData.forEach((contract) {
       try {
-        if (DateTime.parse(contract.createdAt) == time) {
-          _filteredItems.add(contract);
+        final contractDate = DateTime.parse(contract.createdAt);
+
+        if (time.day == contractDate.day &&
+            time.month == contractDate.month &&
+            time.year == contractDate.year) {
+          filteredItems.add(contract);
         }
       } catch (error) {
-        print('Error occured: $error');
+        filteredItems = [];
       }
     });
   }
@@ -51,11 +58,13 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
         yield FailedToLoadContractsState(error: '$error');
       }
     } else if (event is FilterContractsByDate) {
+      final filteringTime =
+          DateTime.parse(FilterContractsByDate(getDate).pickedDateString);
       yield FilteringContractsByDate();
-      await fetchContractsByDate(DateTime.parse('2021-07-21 18:40:26.572236'));
+      await fetchContractsByDate(filteringTime);
 
       try {
-        yield FilteredContractsByDate(filteredContracts: _filteredItems);
+        yield FilteredContractsByDate(filteredContracts: filteredItems);
       } catch (error) {
         yield FailedToFilterContractsByDate(error: '$error');
       }

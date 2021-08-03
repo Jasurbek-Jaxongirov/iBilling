@@ -1,3 +1,9 @@
 {
-    "contract": "Contracts"
+    "contract": "Contracts",
+    "history": "History",
+    "news": "News",
+    "saved": "Saved",
+    "profile": "Profile",
+    "invoice": "Invoice",
+    "filter": "Filter"
 }

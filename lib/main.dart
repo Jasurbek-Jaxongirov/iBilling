@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:i_billing/blocs/history/history_bloc.dart';
+import '/blocs/localization/localization_bloc.dart';
+import '/ui/screens/filters_screen.dart';
 import '/blocs/contracts/contracts_bloc.dart';
 import '/ui/home.dart';
 import '/ui/theme/app_theme.dart';
@@ -18,7 +21,7 @@ void main() async {
         ],
         path:
             'assets/translations', // <-- change the path of the translation files
-        // fallbackLocale: const Locale('ru'),
+        fallbackLocale: const Locale('uz'),
         child: const MyApp()),
   );
 }
@@ -34,7 +37,19 @@ class MyApp extends StatelessWidget {
             ..add(
               LoadContracts(),
             ),
-        )
+        ),
+        BlocProvider(
+          create: (_) => LocalizationBloc()
+            ..add(
+              LocalizeEvent(),
+            ),
+        ),
+        BlocProvider(
+          create: (_) => HistoryBloc()
+            ..add(
+              InitializeHistoryEvent(),
+            ),
+        ),
       ],
       child: MaterialApp(
         localizationsDelegates: context.localizationDelegates,
@@ -44,6 +59,9 @@ class MyApp extends StatelessWidget {
         title: 'iBilling',
         theme: AppTheme.darkTheme(),
         home: const MyHomePage(title: 'iBilling'),
+        routes: {
+          FiltersScreen.routeName: (_) => const FiltersScreen(),
+        },
       ),
     );
   }

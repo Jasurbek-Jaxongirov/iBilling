@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jiffy/jiffy.dart';
 import '/models/contract.dart';
 import '/ui/theme/app_constants.dart';
 
@@ -32,10 +33,19 @@ class ContractItem extends StatelessWidget {
               Chip(
                 label: Text(
                   contract.contractStatus,
-                  style: const TextStyle(
-                    color: Color(0XFF49B7A5),
+                  style: TextStyle(
+                    color: contract.contractStatus.toLowerCase() == 'paid'
+                        ? const Color(0XFF49B7A5)
+                        : contract.contractStatus == 'In process'
+                            ? const Color(0xFFFDAB2A)
+                            : const Color(0xFFFF426D),
                   ),
                 ),
+                backgroundColor: contract.contractStatus.toLowerCase() == 'paid'
+                    ? const Color(0XFF49B7A5).withOpacity(0.15)
+                    : contract.contractStatus == 'In process'
+                        ? const Color(0xFFFDAB2A).withOpacity(0.15)
+                        : const Color(0xFFF85379).withOpacity(0.15),
               ),
             ],
           ),
@@ -57,7 +67,7 @@ class ContractItem extends StatelessWidget {
                         infoText: '${contract.invoiceAmount}'),
                     const Spacer(),
                     Text(
-                      '${contract.createdAt}',
+                      Jiffy(contract.createdAt).format('dd.MM.yyyy'),
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
                             color: const Color(0xFF999999),
                           ),
