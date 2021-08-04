@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:i_billing/blocs/history/history_bloc.dart';
-import '/blocs/localization/localization_bloc.dart';
-import '/ui/screens/filters_screen.dart';
-import '/blocs/contracts/contracts_bloc.dart';
-import '/ui/home.dart';
-import '/ui/theme/app_theme.dart';
+import 'business_logic/blocs/history/history_bloc.dart';
+import 'business_logic/blocs/localization/localization_bloc.dart';
+import 'presentation/ui/screens/filters_screen.dart';
+import 'business_logic/blocs/contracts/contracts_bloc.dart';
+import 'presentation/ui/home.dart';
+import 'presentation/ui/theme/app_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
