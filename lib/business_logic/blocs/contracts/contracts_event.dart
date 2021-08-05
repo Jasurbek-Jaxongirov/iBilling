@@ -7,5 +7,11 @@ class FilterContractsByDate extends ContractsEvent {
   FilterContractsByDate(this.pickedDateString);
 }
 
+class AddNewContractEvent extends ContractsEvent {
+  final Contract contract;
+
+  AddNewContractEvent({required this.contract});
+}
+
 @immutable
 abstract class ContractsEvent {}

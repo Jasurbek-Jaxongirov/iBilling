@@ -32,3 +32,18 @@ class FailedToFilterContractsByDate extends ContractsState {
   final String error;
   FailedToFilterContractsByDate({required this.error});
 }
+
+// Adding new contract
+class AddingNewContract extends ContractsState {}
+
+class AddedNewContract extends ContractsState {
+  final Contract contract;
+
+  AddedNewContract({required this.contract});
+}
+
+class FailedToAddNewContract extends ContractsState {
+  final Object error;
+
+  FailedToAddNewContract({required this.error});
+}

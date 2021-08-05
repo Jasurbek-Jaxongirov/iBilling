@@ -32,6 +32,10 @@ class _ContractsAndIvoicesContainerState
           );
         } else if (state is LoadedContractsState ||
             state is FilteredContractsByDate) {
+          if (state is FilteredContractsByDate &&
+              state.filteredContracts.isEmpty) {
+            return const Text('No Item found');
+          }
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),

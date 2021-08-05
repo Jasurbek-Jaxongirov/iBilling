@@ -14,9 +14,8 @@ class ContractsPage extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final buttonTextStyle =
         Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 15);
-    return BlocProvider.value(
-      value: BlocProvider.of<ContractsBloc>(context),
-      child: Container(
+    return BlocBuilder<ContractsBloc, ContractsState>(
+      builder: (_, state) => Container(
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(

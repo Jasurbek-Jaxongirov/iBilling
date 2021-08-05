@@ -39,10 +39,7 @@ class MyApp extends StatelessWidget {
             ),
         ),
         BlocProvider(
-          create: (_) => LocalizationBloc()
-            ..add(
-              LocalizeEvent(),
-            ),
+          create: (_) => LocalizationBloc(),
         ),
         BlocProvider(
           create: (_) => HistoryBloc()

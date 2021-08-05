@@ -15,12 +15,12 @@ class Constants {
   static const Color darkGreenColor = Color(0XFF008F7F);
   static const Color lightGreenColor = Color(0XFF00A795);
   static String invoice = 'invoice'.tr();
-  static const pages = <Widget>[
-    ContractsPage(),
-    HistoryPage(),
+  static var pages = <Widget>[
+    const ContractsPage(),
+    const HistoryPage(),
     NewsPage(),
-    SavedPage(),
-    ProfilePage(),
+    const SavedPage(),
+    const ProfilePage(),
   ];
   static List<String> titles = [
     'contract'.tr(),

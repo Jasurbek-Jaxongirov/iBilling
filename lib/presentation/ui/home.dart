@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         appBar: AppBar(
           titleTextStyle: const TextStyle(fontSize: 18, color: Colors.white),
-          backgroundColor: Colors.black,
+          backgroundColor: Constants.darkestColor,
           title: Row(
             children: [
               Image.asset(
