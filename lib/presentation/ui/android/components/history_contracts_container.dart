@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/business_logic/blocs/history/history_bloc.dart';
-import '/presentation/ui/theme/app_constants.dart';
 import '../components/contract_item.dart';
-import 'package:easy_localization/easy_localization.dart';
+
+import 'empty_contracts.dart';
 
 class HistoryContractsContainer extends StatelessWidget {
   const HistoryContractsContainer({
@@ -22,29 +22,14 @@ class HistoryContractsContainer extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is LoadedHistoryContractsState) {
+          if (state.contracts.isEmpty) {
+            return const EmptyContracts();
+          }
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      MaterialButton(
-                        onPressed: () {},
-                        child: Text(
-                          'contract'.tr(),
-                          style: buttonTextStyle,
-                        ),
-                      ),
-                      MaterialButton(
-                        onPressed: () {},
-                        child: Text(
-                          Constants.invoice,
-                          style: buttonTextStyle,
-                        ),
-                      ),
-                    ],
-                  ),
                   if (state is LoadedHistoryContractsState)
                     ...state.contracts
                         .map(

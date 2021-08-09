@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '../new_contract.dart';
 import '/presentation/ui/theme/app_constants.dart';
+import 'new_invoice.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ChoiceAlertDialog extends StatelessWidget {
   const ChoiceAlertDialog({
@@ -25,13 +28,15 @@ class ChoiceAlertDialog extends StatelessWidget {
         MaterialButton(
           color: const Color(0xFF4E4E4E),
           onPressed: () {
+            Constants.titles[2] = 'New Contract';
+            Constants.pages[2] = const NewsPage();
             Navigator.of(context).pop();
           },
           child: Row(
             children: [
               SvgPicture.asset('assets/icons/contract-paper.svg'),
               Text(
-                'Contract',
+                'contract'.tr(),
                 style: Theme.of(context).textTheme.headline5,
               ),
             ],
@@ -40,13 +45,15 @@ class ChoiceAlertDialog extends StatelessWidget {
         MaterialButton(
           color: const Color(0xFF4E4E4E),
           onPressed: () {
+            Constants.pages[2] = const NewInvoice();
+            Constants.titles[2] = 'New Invoice';
             Navigator.of(context).pop();
           },
           child: Row(
             children: [
               SvgPicture.asset('assets/icons/invoice-paper.svg'),
               Text(
-                'Invoice',
+                'invoice'.tr(),
                 style: Theme.of(context).textTheme.headline5,
               ),
             ],

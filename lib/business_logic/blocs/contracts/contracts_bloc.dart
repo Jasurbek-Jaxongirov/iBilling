@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import '/data/providers/api/mock_ibilling_service.dart';
+import '../../../data/repositories/mock_ibilling_service.dart';
 import '/data/models/contract.dart';
 import 'package:meta/meta.dart';
 
@@ -12,6 +12,23 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   List<Contract> mockData = [];
   late String _date;
   List<Contract> filteredItems = [];
+  Contract _newContract = Contract(
+      fullName: 'Jasurbek',
+      contractStatus: '',
+      amount: 0,
+      lastInvoice: 0,
+      invoiceAmount: 0,
+      address: '',
+      createdAt: DateTime.now().toIso8601String(),
+      organizationItn: 0);
+
+  set setNewContract(Contract contract) {
+    _newContract = contract;
+  }
+
+  Contract get getNewContract {
+    return _newContract;
+  }
 
   Future<void> getMockData() async {
     mockData = await MockIBillingService().getContractResponse();
@@ -27,7 +44,6 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
 
   Future<void> fetchContractsByDate(DateTime time) async {
     filteredItems = [];
-    await getMockData();
     mockData.forEach((contract) {
       try {
         final contractDate = DateTime.parse(contract.createdAt);
@@ -49,6 +65,7 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   Stream<ContractsState> mapEventToState(
     ContractsEvent event,
   ) async* {
+    // Loading all contracts
     if (event is LoadContracts) {
       yield LoadingContractsState();
       await getMockData();
@@ -57,6 +74,7 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
       } catch (error) {
         yield FailedToLoadContractsState(error: '$error');
       }
+      // Filtering requested contracts
     } else if (event is FilterContractsByDate) {
       final filteringTime =
           DateTime.parse(FilterContractsByDate(getDate).pickedDateString);
@@ -67,6 +85,18 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
         yield FilteredContractsByDate(filteredContracts: filteredItems);
       } catch (error) {
         yield FailedToFilterContractsByDate(error: '$error');
+      }
+      // Adding a new contract
+    } else if (event is AddNewContractEvent) {
+      yield AddingNewContract();
+      final newContract =
+          AddNewContractEvent(contract: getNewContract).contract;
+      mockData.add(newContract);
+
+      try {
+        yield AddedNewContract(contract: newContract);
+      } catch (error) {
+        yield FailedToAddNewContract(error: error);
       }
     }
   }

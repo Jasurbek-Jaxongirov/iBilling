@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import '/data/models/contract.dart';
-import '/data/providers/api/mock_ibilling_service.dart';
+import '../../../data/repositories/mock_ibilling_service.dart';
 import 'package:meta/meta.dart';
 
 part 'history_event.dart';

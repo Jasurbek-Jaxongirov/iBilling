@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '/business_logic/blocs/invoice/invoice_bloc.dart';
 import 'business_logic/blocs/history/history_bloc.dart';
-import 'business_logic/blocs/localization/localization_bloc.dart';
 import 'presentation/ui/screens/filters_screen.dart';
 import 'business_logic/blocs/contracts/contracts_bloc.dart';
 import 'presentation/ui/home.dart';
@@ -39,7 +39,10 @@ class MyApp extends StatelessWidget {
             ),
         ),
         BlocProvider(
-          create: (_) => LocalizationBloc(),
+          create: (_) => InvoiceBloc()
+            ..add(
+              LoadInvoices(),
+            ),
         ),
         BlocProvider(
           create: (_) => HistoryBloc()

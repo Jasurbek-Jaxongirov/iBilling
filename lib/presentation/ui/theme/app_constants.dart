@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '/presentation/ui/android/contracts_page.dart';
 import '/presentation/ui/android/history_page.dart';
-import '/presentation/ui/android/news_page.dart';
+import '../android/new_contract.dart';
 import '/presentation/ui/android/profile_page.dart';
 import '/presentation/ui/android/saved_page.dart';
 
@@ -18,7 +18,7 @@ class Constants {
   static var pages = <Widget>[
     const ContractsPage(),
     const HistoryPage(),
-    NewsPage(),
+    const NewsPage(),
     const SavedPage(),
     const ProfilePage(),
   ];

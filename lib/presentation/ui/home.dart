@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '/presentation/ui/screens/filters_screen.dart';
 import '/presentation/ui/theme/app_constants.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'android/components/choice_alert_dialog.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -19,7 +21,13 @@ var pickedDate = DateTime.now();
 
 class _MyHomePageState extends State<MyHomePage> {
   var _index = 0;
-
+  List<String> titles = [
+    'contract'.tr(),
+    'history'.tr(),
+    'news'.tr(),
+    'saved'.tr(),
+    'profile'.tr()
+  ];
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -41,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: MediaQuery.of(context).size.width * 0.032,
               ),
               Text(
-                Constants.titles[_index],
+                titles[_index],
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                 ),
@@ -105,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           items: [
             BottomNavigationBarItem(
-              label: Constants.titles[0],
+              label: 'contract'.tr(),
               icon: SvgPicture.asset(
                 _index == 0
                     ? 'assets/icons/contracts-bold.svg'
@@ -114,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
               tooltip: 'Contracts',
             ),
             BottomNavigationBarItem(
-              label: Constants.titles[1],
+              label: 'history'.tr(),
               icon: SvgPicture.asset(
                 _index == 1
                     ? 'assets/icons/time-circle-bold.svg'
@@ -123,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
               tooltip: 'History',
             ),
             BottomNavigationBarItem(
-              label: Constants.titles[2],
+              label: 'news'.tr(),
               icon: SvgPicture.asset(
                 _index == 2
                     ? 'assets/icons/plus-bold.svg'
@@ -132,13 +140,13 @@ class _MyHomePageState extends State<MyHomePage> {
               tooltip: 'News',
             ),
             BottomNavigationBarItem(
-              label: Constants.titles[3],
+              label: 'saved'.tr(),
               icon: SvgPicture.asset(_index == 3
                   ? 'assets/icons/bookmark-bold.svg'
                   : 'assets/icons/bookmark-light.svg'),
             ),
             BottomNavigationBarItem(
-                label: Constants.titles[4],
+                label: 'profile'.tr(),
                 icon: SvgPicture.asset(
                   _index == 4
                       ? 'assets/icons/profile-bold.svg'

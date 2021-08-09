@@ -5,5 +5,8 @@
     "saved": "Saved",
     "profile": "Profile",
     "invoice": "Invoice",
-    "filter": "Filter"
+    "filter": "Filter",
+    "lang": "English(USA)",
+    "save_contract": "Save Contract",
+    "save_invoice": "Save Invoice"
 }

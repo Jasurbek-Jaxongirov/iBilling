@@ -39,5 +39,11 @@
             "created_at": "2021-07-31 12:40:26.572236",
             "organization_itn": 5647520318
         }
-    ]
+    ],
+    "invoice": [{
+        "service_name": "Computer Graphics",
+        "invoice_status": "Rejected by IQ",
+        "amount": 1320000,
+        "created_at": "2021-07-31 12:40:26.572236"
+    }]
 }

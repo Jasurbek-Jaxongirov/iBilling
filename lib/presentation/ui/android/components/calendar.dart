@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '/business_logic/blocs/invoice/invoice_bloc.dart';
 import '/business_logic/blocs/contracts/contracts_bloc.dart';
 import '/presentation/ui/theme/app_constants.dart';
 import 'day_container.dart';
@@ -41,6 +42,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                 IconButton(
                   onPressed: () {
                     setState(() {
+                      _selectedIndex = -1;
                       pickedDate = pickedDate.subtract(
                         const Duration(days: 7),
                       );
@@ -51,6 +53,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                 IconButton(
                   onPressed: () {
                     setState(() {
+                      _selectedIndex = -1;
                       pickedDate = pickedDate.add(const Duration(days: 7));
                     });
                   },
@@ -78,6 +81,10 @@ class _CustomCalendarState extends State<CustomCalendar> {
                           pickedIndexDay.toString();
                       BlocProvider.of<ContractsBloc>(context).add(
                           FilterContractsByDate(pickedIndexDay.toString()));
+                      BlocProvider.of<InvoiceBloc>(context).setDate =
+                          pickedIndexDay.toString();
+                      BlocProvider.of<InvoiceBloc>(context)
+                          .add(FilterInvoicesByDate(pickedIndexDay.toString()));
                     },
                     child: DayContainer(
                       isActive: _selectedIndex == index,
