@@ -14,10 +14,10 @@ class NewInvoice extends StatefulWidget {
 
 class _NewInvoiceState extends State<NewInvoice> {
   final List<String> invoiceItems = [
-    'Paid',
-    'In process',
-    'Rejected by Payme',
-    'Rejected by IQ'
+    'paid'.tr(),
+    'in-process'.tr(),
+    'rej-by-payme'.tr(),
+    'rej-by-iq'.tr()
   ];
 
   String? valueChosen;
@@ -67,7 +67,7 @@ class _NewInvoiceState extends State<NewInvoice> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Service Name'),
+              Text('service-name'.tr()),
               TextFormField(
                 controller: serviceController,
                 validator: (value) {
@@ -85,7 +85,7 @@ class _NewInvoiceState extends State<NewInvoice> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 10, vertical: 5)),
               ),
-              const Text('Amount'),
+              Text('amount'.tr()),
               TextFormField(
                 validator: (value) {
                   if (value == '') {
@@ -102,7 +102,7 @@ class _NewInvoiceState extends State<NewInvoice> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 10, vertical: 5)),
               ),
-              const Text('Status of the invoice'),
+              Text('invoice-status'.tr()),
               DropdownButtonFormField<String>(
                 validator: (value) {
                   if (value == '') {

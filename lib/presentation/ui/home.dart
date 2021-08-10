@@ -21,13 +21,7 @@ var pickedDate = DateTime.now();
 
 class _MyHomePageState extends State<MyHomePage> {
   var _index = 0;
-  List<String> titles = [
-    'contract'.tr(),
-    'history'.tr(),
-    'news'.tr(),
-    'saved'.tr(),
-    'profile'.tr()
-  ];
+  List<String> titles = ['contract', 'history', 'news', 'saved', 'profile'];
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -49,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: MediaQuery.of(context).size.width * 0.032,
               ),
               Text(
-                titles[_index],
+                titles[_index].tr(),
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                 ),

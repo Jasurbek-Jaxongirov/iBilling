@@ -13,5 +13,10 @@ class AddNewContractEvent extends ContractsEvent {
   AddNewContractEvent({required this.contract});
 }
 
+class DeleteContractEvent extends ContractsEvent {
+  final Contract contract;
+  DeleteContractEvent({required this.contract});
+}
+
 @immutable
 abstract class ContractsEvent {}

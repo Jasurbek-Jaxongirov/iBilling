@@ -1,7 +1,7 @@
 {
     "contracts": [{
             "full_name": "Yoldosheva Ziyoda",
-            "contract_status": "Paid",
+            "contract_status": "paid",
             "amount": 1200000,
             "last_invoice": 156,
             "invoice_amount": 6,
@@ -11,7 +11,7 @@
         },
         {
             "full_name": "Seulki Lee",
-            "contract_status": "In process",
+            "contract_status": "in-process",
             "amount": 1250000,
             "last_invoice": 156,
             "invoice_amount": 5,
@@ -21,7 +21,7 @@
         },
         {
             "full_name": "Ashrapova Nigina",
-            "contract_status": "Rejected by Payme",
+            "contract_status": "rej-by-payme",
             "amount": 1320000,
             "last_invoice": 151,
             "invoice_amount": 4,
@@ -31,7 +31,7 @@
         },
         {
             "full_name": "Ashrapova Nigina",
-            "contract_status": "Rejected by IQ",
+            "contract_status": "rej-by-iq",
             "amount": 1320000,
             "last_invoice": 151,
             "invoice_amount": 4,
@@ -41,9 +41,28 @@
         }
     ],
     "invoice": [{
-        "service_name": "Computer Graphics",
-        "invoice_status": "Rejected by IQ",
-        "amount": 1320000,
-        "created_at": "2021-07-31 12:40:26.572236"
-    }]
+            "service_name": "Computer Graphics",
+            "invoice_status": "rej-by-payme",
+            "amount": 1320000,
+            "created_at": "2021-07-31 12:40:26.572236"
+        },
+        {
+            "service_name": "Flutter App",
+            "invoice_status": "rej-by-iq",
+            "amount": 1320000,
+            "created_at": "2021-08-07 12:40:26.572236"
+        },
+        {
+            "service_name": "Flutter App",
+            "invoice_status": "paid",
+            "amount": 1320000,
+            "created_at": "2021-08-08 12:40:26.572236"
+        },
+        {
+            "service_name": "Flutter App",
+            "invoice_status": "in-process",
+            "amount": 1320000,
+            "created_at": "2021-07-28 12:40:26.572236"
+        }
+    ]
 }

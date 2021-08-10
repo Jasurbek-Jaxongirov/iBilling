@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '/presentation/ui/theme/app_constants.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SavedPage extends StatelessWidget {
   const SavedPage({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class SavedPage extends StatelessWidget {
             height: 15,
           ),
           Text(
-            'No saved contracts',
+            'empty-contract'.tr(),
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ],

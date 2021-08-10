@@ -6,6 +6,7 @@ import '/business_logic/blocs/history/history_bloc.dart';
 import '/presentation/ui/theme/app_constants.dart';
 import 'package:jiffy/jiffy.dart';
 import 'components/history_contracts_container.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -17,12 +18,12 @@ class HistoryPage extends StatelessWidget {
     String timeReturner(String time) {
       if (time == '1') {
         if (blocBuilder.getInitialPeriod == '') {
-          return 'From';
+          return 'from'.tr();
         }
         return Jiffy(blocBuilder.getInitialPeriod).format('dd.MM.yyyy');
       } else if (time == '2') {
         if (blocBuilder.getLastPeriod == '') {
-          return 'To';
+          return 'to'.tr();
         }
         return Jiffy(blocBuilder.getLastPeriod).format('dd.MM.yyyy');
       } else {
@@ -50,7 +51,7 @@ class HistoryPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Date',
+                    'date'.tr(),
                     style: theme.textTheme.bodyText1!.copyWith(
                       color: const Color(0XFF999999),
                     ),
@@ -83,7 +84,7 @@ class HistoryPage extends StatelessWidget {
                             children: [
                               Text(
                                 timeReturner('1') == ''
-                                    ? 'From '
+                                    ? 'from'.tr()
                                     : '${timeReturner('1')}',
                                 style: textStyle,
                               ),
@@ -128,7 +129,7 @@ class HistoryPage extends StatelessWidget {
                             children: [
                               Text(
                                 timeReturner('2') == ''
-                                    ? 'To '
+                                    ? 'to'.tr()
                                     : '${timeReturner('2')}',
                                 style: textStyle,
                               ),
@@ -176,7 +177,7 @@ class EmptyHistoryList extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.05,
         ),
         Text(
-          'No contracts are made',
+          'empty'.tr(),
           style: theme.textTheme.bodyText1,
         ),
       ],

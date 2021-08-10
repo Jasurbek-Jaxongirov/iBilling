@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '/data/models/contract.dart';
 import '/presentation/ui/theme/app_constants.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class InvoiceItem extends StatelessWidget {
   final Invoice invoice;
@@ -26,20 +27,22 @@ class InvoiceItem extends StatelessWidget {
               const Spacer(),
               Chip(
                 label: Text(
-                  invoice.invoiceStatus,
+                  invoice.invoiceStatus.tr(),
                   style: TextStyle(
-                    color: invoice.invoiceStatus.toLowerCase() == 'paid'
-                        ? const Color(0XFF49B7A5)
-                        : invoice.invoiceStatus == 'In process'
-                            ? const Color(0xFFFDAB2A)
-                            : const Color(0xFFFF426D),
+                    color:
+                        invoice.invoiceStatus.tr().toLowerCase() == 'paid'.tr()
+                            ? const Color(0XFF49B7A5)
+                            : invoice.invoiceStatus.tr() == 'in-process'.tr()
+                                ? const Color(0xFFFDAB2A)
+                                : const Color(0xFFFF426D),
                   ),
                 ),
-                backgroundColor: invoice.invoiceStatus.toLowerCase() == 'paid'
-                    ? const Color(0XFF49B7A5).withOpacity(0.15)
-                    : invoice.invoiceStatus == 'In process'
-                        ? const Color(0xFFFDAB2A).withOpacity(0.15)
-                        : const Color(0xFFF85379).withOpacity(0.15),
+                backgroundColor:
+                    invoice.invoiceStatus.tr().toLowerCase() == 'paid'.tr()
+                        ? const Color(0XFF49B7A5).withOpacity(0.15)
+                        : invoice.invoiceStatus.tr() == 'in-process'.tr()
+                            ? const Color(0xFFFDAB2A).withOpacity(0.15)
+                            : const Color(0xFFF85379).withOpacity(0.15),
               ),
             ],
           ),
@@ -49,12 +52,13 @@ class InvoiceItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomRichText(
-                    labelText: 'Name of the service: ',
+                    labelText: '${'service-name'.tr()}: ',
                     infoText: ' ${invoice.serviceName}'),
                 Row(
                   children: [
                     CustomRichText(
-                        labelText: 'Amount: ', infoText: ' ${invoice.amount}'),
+                        labelText: '${'amount'.tr()}: ',
+                        infoText: ' ${invoice.amount}'),
                     const Spacer(),
                     Text(
                       Jiffy(invoice.createdAt).format('dd.MM.yyyy'),

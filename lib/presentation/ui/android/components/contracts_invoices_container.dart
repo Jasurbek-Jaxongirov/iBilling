@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '/presentation/ui/android/components/single_contract_item.dart';
 import '/business_logic/blocs/invoice/invoice_bloc.dart';
 import '/presentation/ui/android/components/invoice_item.dart';
 import '/business_logic/blocs/contracts/contracts_bloc.dart';
@@ -8,7 +9,7 @@ import '../components/contract_item.dart';
 
 import 'empty_contracts.dart';
 
-class ContractsAndIvoicesContainer extends StatelessWidget {
+class ContractsAndIvoicesContainer extends StatefulWidget {
   const ContractsAndIvoicesContainer({
     Key? key,
     required this.isContract,
@@ -16,9 +17,18 @@ class ContractsAndIvoicesContainer extends StatelessWidget {
   final bool isContract;
 
   @override
+  _ContractsAndIvoicesContainerState createState() =>
+      _ContractsAndIvoicesContainerState();
+}
+
+class _ContractsAndIvoicesContainerState
+    extends State<ContractsAndIvoicesContainer> {
+  var isClicked = false;
+  var selectedIndex = -1;
+  @override
   Widget build(BuildContext context) {
     // Contracts
-    if (isContract)
+    if (widget.isContract)
       return BlocBuilder<ContractsBloc, ContractsState>(
         builder: (ctx, state) {
           if (state is LoadingContractsState ||
@@ -33,46 +43,63 @@ class ContractsAndIvoicesContainer extends StatelessWidget {
                 state.filteredContracts.isEmpty) {
               return const EmptyContracts();
             }
-            return SingleChildScrollView(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                child: Column(
-                  children: [
-                    if (state is LoadedContractsState)
-                      ...state.contracts
-                          .map(
-                            (element) => Column(
-                              children: [
-                                ContractItem(
-                                  contract: element,
-                                ),
-                                const SizedBox(
-                                  height: 12,
-                                ),
-                              ],
+            if (state is LoadedContractsState)
+              return ListView.separated(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  separatorBuilder: (_, index) {
+                    return const SizedBox(
+                      height: 12,
+                    );
+                  },
+                  itemCount: state.contracts.length,
+                  itemBuilder: (_, index) {
+                    return GestureDetector(
+                      onLongPress: () {
+                        selectedIndex = index;
+                        isClicked = !isClicked;
+                        setState(() {});
+                      },
+                      onDoubleTap: () {
+                        isClicked = false;
+                        setState(() {});
+                      },
+                      child: selectedIndex == index && isClicked
+                          ? SingleContractItem(contract: state.contracts[index])
+                          : ContractItem(
+                              contract: state.contracts[index],
                             ),
-                          )
-                          .toList()
-                    else if (state is FilteredContractsByDate)
-                      ...state.filteredContracts
-                          .map(
-                            (element) => Column(
-                              children: [
-                                ContractItem(
-                                  contract: element,
-                                ),
-                                const SizedBox(
-                                  height: 12,
-                                ),
-                              ],
+                    );
+                  });
+            else if (state is FilteredContractsByDate)
+              return ListView.separated(
+                  separatorBuilder: (_, index) {
+                    return const SizedBox(
+                      height: 12,
+                    );
+                  },
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  itemCount: state.filteredContracts.length,
+                  itemBuilder: (_, index) {
+                    return GestureDetector(
+                      onLongPress: () {
+                        selectedIndex = index;
+                        isClicked = !isClicked;
+                        setState(() {});
+                      },
+                      onDoubleTap: () {
+                        isClicked = false;
+                        setState(() {});
+                      },
+                      child: selectedIndex == index && isClicked
+                          ? SingleContractItem(
+                              contract: state.filteredContracts[index])
+                          : ContractItem(
+                              contract: state.filteredContracts[index],
                             ),
-                          )
-                          .toList(),
-                  ],
-                ),
-              ),
-            );
+                    );
+                  });
           } else if (state is FailedToLoadContractsState ||
               state is FailedToFilterContractsByDate) {
             return Center(

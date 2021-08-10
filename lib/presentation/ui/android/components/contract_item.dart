@@ -3,10 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '/data/models/contract.dart';
 import '/presentation/ui/theme/app_constants.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ContractItem extends StatelessWidget {
   final Contract contract;
-
   // ignore: use_key_in_widget_constructors
   const ContractItem({
     Key? key,
@@ -32,20 +32,22 @@ class ContractItem extends StatelessWidget {
               const Spacer(),
               Chip(
                 label: Text(
-                  contract.contractStatus,
+                  contract.contractStatus.tr(),
                   style: TextStyle(
-                    color: contract.contractStatus.toLowerCase() == 'paid'
+                    color: contract.contractStatus.tr().toLowerCase() ==
+                            'paid'.tr()
                         ? const Color(0XFF49B7A5)
-                        : contract.contractStatus == 'In process'
+                        : contract.contractStatus.tr() == 'in-process'.tr()
                             ? const Color(0xFFFDAB2A)
                             : const Color(0xFFFF426D),
                   ),
                 ),
-                backgroundColor: contract.contractStatus.toLowerCase() == 'paid'
-                    ? const Color(0XFF49B7A5).withOpacity(0.15)
-                    : contract.contractStatus == 'In process'
-                        ? const Color(0xFFFDAB2A).withOpacity(0.15)
-                        : const Color(0xFFF85379).withOpacity(0.15),
+                backgroundColor:
+                    contract.contractStatus.tr().toLowerCase() == 'paid'.tr()
+                        ? const Color(0XFF49B7A5).withOpacity(0.15)
+                        : contract.contractStatus.tr() == 'in-process'.tr()
+                            ? const Color(0xFFFDAB2A).withOpacity(0.15)
+                            : const Color(0xFFF85379).withOpacity(0.15),
               ),
             ],
           ),
@@ -54,16 +56,18 @@ class ContractItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomRichText(
-                    labelText: 'Fish: ', infoText: contract.fullName),
+                    labelText: '${'full-name'.tr()}: ',
+                    infoText: contract.fullName),
                 CustomRichText(
-                    labelText: 'Amount:', infoText: '${contract.amount}'),
+                    labelText: '${'amount'.tr()}:',
+                    infoText: '${contract.amount}'),
                 CustomRichText(
-                    labelText: 'Last invoice: ',
+                    labelText: '${'last-invoice'.tr()}: ',
                     infoText: '№ ${contract.lastInvoice}'),
                 Row(
                   children: [
                     CustomRichText(
-                        labelText: 'Number of invoice: ',
+                        labelText: '${'invoice-number'.tr()}: ',
                         infoText: '${contract.invoiceAmount}'),
                     const Spacer(),
                     Text(

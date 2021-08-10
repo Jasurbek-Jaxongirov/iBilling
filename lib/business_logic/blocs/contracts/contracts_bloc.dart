@@ -9,21 +9,28 @@ part 'contracts_event.dart';
 part 'contracts_state.dart';
 
 class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
+  bool isClicked = false;
   List<Contract> mockData = [];
+  late Contract contractToDelete;
   late String _date;
   List<Contract> filteredItems = [];
-  Contract _newContract = Contract(
-      fullName: 'Jasurbek',
-      contractStatus: '',
-      amount: 0,
-      lastInvoice: 0,
-      invoiceAmount: 0,
-      address: '',
-      createdAt: DateTime.now().toIso8601String(),
-      organizationItn: 0);
+  late Contract _newContract;
+  int inc = 0;
+  set setContractToDelete(Contract contract) {
+    contractToDelete = contract;
+  }
+
+  Contract get getContractToDelete {
+    return contractToDelete;
+  }
 
   set setNewContract(Contract contract) {
     _newContract = contract;
+  }
+
+  void deleteRequestedContract() {
+    mockData
+        .removeWhere((item) => contractToDelete.createdAt == item.createdAt);
   }
 
   Contract get getNewContract {
@@ -68,7 +75,12 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
     // Loading all contracts
     if (event is LoadContracts) {
       yield LoadingContractsState();
-      await getMockData();
+
+      if (inc == 0) {
+        await getMockData();
+        inc++;
+      }
+
       try {
         yield LoadedContractsState(contracts: mockData);
       } catch (error) {
@@ -97,6 +109,14 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
         yield AddedNewContract(contract: newContract);
       } catch (error) {
         yield FailedToAddNewContract(error: error);
+      }
+    } else if (event is DeleteContractEvent) {
+      yield DeletingContractState();
+      deleteRequestedContract();
+      try {
+        yield DeletedContractState(deletedContract: getContractToDelete);
+      } catch (error) {
+        yield FailedToDeleteContractState(error: error);
       }
     }
   }

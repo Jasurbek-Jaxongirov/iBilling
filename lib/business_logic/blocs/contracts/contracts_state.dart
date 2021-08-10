@@ -47,3 +47,17 @@ class FailedToAddNewContract extends ContractsState {
 
   FailedToAddNewContract({required this.error});
 }
+
+// Deleting contract
+
+class DeletingContractState extends ContractsState {}
+
+class DeletedContractState extends ContractsState {
+  final Contract deletedContract;
+  DeletedContractState({required this.deletedContract});
+}
+
+class FailedToDeleteContractState extends ContractsState {
+  final Object error;
+  FailedToDeleteContractState({required this.error});
+}

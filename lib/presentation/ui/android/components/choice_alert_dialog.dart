@@ -17,7 +17,7 @@ class ChoiceAlertDialog extends StatelessWidget {
       actionsPadding: const EdgeInsets.symmetric(horizontal: 20),
       backgroundColor: Constants.darkColor,
       title: Text(
-        'What would you like to create?',
+        'choose-create'.tr(),
         textAlign: TextAlign.center,
         style: Theme.of(context)
             .textTheme

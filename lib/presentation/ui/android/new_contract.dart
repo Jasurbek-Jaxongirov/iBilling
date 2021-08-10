@@ -14,12 +14,12 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
-  final List<String> _entityItems = ['Физическое', 'Юридическое'];
+  final List<String> _entityItems = ['corporal'.tr(), 'juredical'.tr()];
   final List<String> _contractStatus = [
-    'Paid',
-    'In process',
-    'Rejected by Payme',
-    'Rejected by IQ'
+    'paid'.tr(),
+    'in-process'.tr(),
+    'rej-by-payme'.tr(),
+    'rej-by-iq'.tr()
   ];
   String? entityValue;
   String? contractStatusValue;
@@ -36,7 +36,7 @@ class _NewsPageState extends State<NewsPage> {
     BlocProvider.of<ContractsBloc>(context, listen: false).setNewContract =
         Contract(
       fullName: fullnameController.text,
-      contractStatus: contractStatusValue!,
+      contractStatus: contractStatusValue!.tr(),
       amount: 0,
       lastInvoice: 0,
       invoiceAmount: 0,
@@ -79,6 +79,7 @@ class _NewsPageState extends State<NewsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text('entity'.tr()),
               DropdownButtonFormField<String>(
                 validator: (value) {
                   if (value == '') {
@@ -104,7 +105,7 @@ class _NewsPageState extends State<NewsPage> {
                       ))
                 ],
               ),
-              const Text('Full Name'),
+              Text('full-name'.tr()),
               TextFormField(
                 validator: (value) {
                   if (value == '') {
@@ -126,7 +127,7 @@ class _NewsPageState extends State<NewsPage> {
                       EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 ),
               ),
-              const Text('Address of the organization'),
+              Text('org-address'.tr()),
               TextFormField(
                 validator: (value) {
                   if (value == '') {
@@ -149,7 +150,7 @@ class _NewsPageState extends State<NewsPage> {
                       EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 ),
               ),
-              const Text('VATIN'),
+              Text('vatin'.tr()),
               TextFormField(
                 validator: (value) {
                   if (value == '') {
@@ -181,7 +182,7 @@ class _NewsPageState extends State<NewsPage> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 ),
               ),
-              const Text('Status of the contract'),
+              Text('contract-status'.tr()),
               DropdownButtonFormField<String>(
                 validator: (value) {
                   if (value == '') {
