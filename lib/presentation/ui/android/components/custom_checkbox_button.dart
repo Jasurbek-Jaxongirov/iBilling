@@ -28,6 +28,7 @@ class CustomCheckboxButton extends StatelessWidget {
               ),
               Text(
                 buttonText,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: isChecked ? Colors.white : const Color(0xFFA6A6A6),
                 ),

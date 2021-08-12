@@ -6,16 +6,30 @@ import '/presentation/ui/theme/app_constants.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class SingleContractItem extends StatelessWidget {
+class SingleContractItem extends StatefulWidget {
   final Contract contract;
-  // ignore: use_key_in_widget_constructors
   const SingleContractItem({
     Key? key,
     required this.contract,
   }) : super(key: key);
 
   @override
+  _SingleContractItemState createState() => _SingleContractItemState();
+}
+
+class _SingleContractItemState extends State<SingleContractItem> {
+  var isShow = false;
+
+  TextEditingController controller = TextEditingController();
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    const text = 'Leave a comment, why are you deleting this contract?';
     return SizedBox(
       width: double.infinity,
       height: 370,
@@ -33,36 +47,36 @@ class SingleContractItem extends StatelessWidget {
               children: [
                 CustomRichText(
                   labelText: '${'full-name'.tr()}: ',
-                  infoText: contract.fullName,
+                  infoText: widget.contract.fullName,
                 ),
                 CustomRichText(
                   labelText: '${'contract-status'.tr()}: ',
-                  infoText: contract.contractStatus.tr(),
+                  infoText: widget.contract.contractStatus.tr(),
                 ),
                 CustomRichText(
                   labelText: '${'amount'.tr()}: ',
-                  infoText: contract.amount.toString(),
+                  infoText: widget.contract.amount.toString(),
                 ),
                 CustomRichText(
                   labelText: '${'last-invoice'.tr()}: ',
-                  infoText: contract.lastInvoice.toString(),
+                  infoText: widget.contract.lastInvoice.toString(),
                 ),
                 CustomRichText(
                   labelText: '${'invoice-number'.tr()}: ',
-                  infoText: contract.invoiceAmount.toString(),
+                  infoText: widget.contract.invoiceAmount.toString(),
                 ),
                 CustomRichText(
                   labelText: '${'org-address'.tr()}: ',
-                  infoText: contract.address,
+                  infoText: widget.contract.address,
                 ),
                 CustomRichText(
                   labelText: '${'vatin'.tr()}: ',
-                  infoText: contract.organizationItn.toString(),
+                  infoText: widget.contract.organizationItn.toString(),
                 ),
                 CustomRichText(
                   labelText: 'Created at: ',
-                  infoText:
-                      Jiffy(contract.createdAt).format('h:mm, dd MMM, yyyy'),
+                  infoText: Jiffy(widget.contract.createdAt)
+                      .format('h:mm, dd MMM, yyyy'),
                 ),
               ],
             ),
@@ -74,43 +88,113 @@ class SingleContractItem extends StatelessWidget {
             child: MaterialButton(
               color: const Color(0xFFFF426D).withOpacity(0.3),
               minWidth: double.infinity,
-              onPressed: () {
-                BlocProvider.of<ContractsBloc>(context, listen: false)
-                    .setContractToDelete = contract;
-                BlocProvider.of<ContractsBloc>(context, listen: false)
-                    .add(DeleteContractEvent(contract: contract));
+              onPressed: () async {
+                await showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (ctx) {
+                      return AlertDialog(
+                        backgroundColor: Constants.darkColor,
+                        title: Text(
+                          '$text',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                        content: TextField(
+                          style: Theme.of(context).textTheme.bodyText1,
+                          onChanged: (value) {
+                            if (value == '') {
+                              setState(() {
+                                isShow = false;
+                              });
+                            } else {
+                              setState(() {
+                                isShow = true;
+                              });
+                            }
+                            print(isShow);
+                          },
+                          controller: controller,
+                          decoration: const InputDecoration(
+                              filled: true,
+                              fillColor: Color(0xFF5C5C5C),
+                              hintText: 'Type here',
+                              hintStyle: TextStyle(
+                                color: Color(0xFFC0C0C0),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 3),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide.none),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none)),
+                        ),
+                        actions: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ConstrainedBox(
+                                constraints: BoxConstraints.tightFor(
+                                    width: MediaQuery.of(ctx).size.width * 0.3),
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.resolveWith(
+                                              (states) =>
+                                                  const Color(0xFFFF426D)
+                                                      .withOpacity(0.3))),
+                                  onPressed: () {
+                                    controller.clear();
+                                    Navigator.of(ctx).pop();
+                                  },
+                                  child: const Text(
+                                    'Cancel',
+                                    style: TextStyle(color: Color(0xFFFF426D)),
+                                  ),
+                                ),
+                              ),
+                              ConstrainedBox(
+                                constraints: BoxConstraints.tightFor(
+                                    width: MediaQuery.of(ctx).size.width * 0.3),
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.resolveWith(
+                                              (states) =>
+                                                  const Color(0xFFFF426D))),
+                                  onPressed: () {
+                                    if (controller.text == '') {
+                                      return;
+                                    }
+
+                                    Navigator.of(context).pop();
+                                    BlocProvider.of<ContractsBloc>(context,
+                                            listen: false)
+                                        .setContractToDelete = widget.contract;
+
+                                    BlocProvider.of<ContractsBloc>(context,
+                                            listen: false)
+                                        .deleteRequestedContract();
+                                    BlocProvider.of<ContractsBloc>(context)
+                                        .add(LoadContracts());
+                                    controller.clear();
+                                  },
+                                  child: const Text('Done'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    });
               },
-              child: BlocBuilder<ContractsBloc, ContractsState>(
-                  builder: (_, state) {
-                if (!(state is DeletingContractState) &&
-                    !(state is FailedToDeleteContractState) &&
-                    !(state is DeletedContractState)) {
-                  return Text(
-                    'Delete contract',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(color: const Color(0xFFFF426D)),
-                  );
-                } else if (state is DeletingContractState) {
-                  return const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  );
-                } else if (state is DeletedContractState) {
-                  BlocProvider.of<ContractsBloc>(context, listen: false)
-                      .add(LoadContracts());
-                  return Text(
-                    'Delete contract',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(color: const Color(0xFFFF426D)),
-                  );
-                } else if (state is FailedToDeleteContractState) {
-                  return Text('$state.error');
-                }
-                return Container();
-              }),
+              child: Text(
+                'Delete Contract',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(color: const Color(0xFFFF426D)),
+              ),
             ),
           ),
         ],

@@ -34,5 +34,7 @@
     "empty": "Hech qanday shartnoma qilinmagan",
     "last-invoice": "So'nggi hisob-faktura",
     "invoice-number": "Hisob-faktura sanog'i",
-    "created-at": "Yaratilgan sana"
+    "created-at": "Yaratilgan sana",
+    "apply-filters": "Filterni qo'llash",
+    "status": "Status"
 }

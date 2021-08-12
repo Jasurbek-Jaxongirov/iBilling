@@ -10,6 +10,8 @@ part 'contracts_state.dart';
 
 class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   bool isClicked = false;
+  bool showButton = false;
+  String text = '';
   List<Contract> mockData = [];
   late Contract contractToDelete;
   late String _date;
@@ -29,8 +31,15 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   }
 
   void deleteRequestedContract() {
-    mockData
-        .removeWhere((item) => contractToDelete.createdAt == item.createdAt);
+    final temporaryList = <Contract>[];
+    // mockData
+    //     .removeWhere((item) => contractToDelete.createdAt == item.createdAt);
+    mockData.forEach((element) {
+      if (element.createdAt != contractToDelete.createdAt) {
+        temporaryList.add(element);
+      }
+    });
+    mockData = temporaryList;
   }
 
   Contract get getNewContract {
@@ -72,13 +81,15 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   Stream<ContractsState> mapEventToState(
     ContractsEvent event,
   ) async* {
+    print(showButton);
     // Loading all contracts
     if (event is LoadContracts) {
       yield LoadingContractsState();
-
+      print('Loading Initialized');
       if (inc == 0) {
         await getMockData();
-        inc++;
+        inc = 1;
+        print('Initialized once...');
       }
 
       try {

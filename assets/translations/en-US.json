@@ -34,5 +34,7 @@
     "empty": "No contracts are made",
     "last-invoice": "Last Invoice",
     "invoice-number": "Number of invoices",
-    "created-at": "Created at"
+    "created-at": "Created at",
+    "apply-filters": "Apply filters",
+    "status": "Status"
 }

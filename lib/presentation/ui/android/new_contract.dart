@@ -218,9 +218,8 @@ class _NewsPageState extends State<NewsPage> {
                 onPressed: _saveFrom,
                 child: BlocBuilder<ContractsBloc, ContractsState>(
                   builder: (_, state) {
-                    if (state is ContractsInitialState ||
-                        state is LoadedContractsState ||
-                        state is FilteredContractsByDate) {
+                    if (!(state is AddingNewContract) &&
+                        !(state is AddedNewContract)) {
                       return Text(
                         'save_contract'.tr(),
                         style: Theme.of(context).textTheme.bodyText1,

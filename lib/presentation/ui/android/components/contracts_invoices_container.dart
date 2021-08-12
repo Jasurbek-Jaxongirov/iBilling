@@ -45,8 +45,8 @@ class _ContractsAndIvoicesContainerState
             }
             if (state is LoadedContractsState)
               return ListView.separated(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  // padding:
+                  //   const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   separatorBuilder: (_, index) {
                     return const SizedBox(
                       height: 12,
@@ -78,8 +78,8 @@ class _ContractsAndIvoicesContainerState
                       height: 12,
                     );
                   },
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  // padding:
+                  // const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   itemCount: state.filteredContracts.length,
                   itemBuilder: (_, index) {
                     return GestureDetector(
