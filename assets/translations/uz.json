@@ -36,5 +36,6 @@
     "invoice-number": "Hisob-faktura sanog'i",
     "created-at": "Yaratilgan sana",
     "apply-filters": "Filterni qo'llash",
-    "status": "Status"
+    "status": "Status",
+    "comment": "Fikringizni qolding, nega bu shartnomani o'chirib tashlamoqdasiz?"
 }

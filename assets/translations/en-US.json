@@ -36,5 +36,6 @@
     "invoice-number": "Number of invoices",
     "created-at": "Created at",
     "apply-filters": "Apply filters",
-    "status": "Status"
+    "status": "Status",
+    "comment": "Leave a comment, why are you deleting this contract?"
 }

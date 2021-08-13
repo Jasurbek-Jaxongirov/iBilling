@@ -23,13 +23,13 @@ class _SingleContractItemState extends State<SingleContractItem> {
   TextEditingController controller = TextEditingController();
   @override
   void dispose() {
-    controller.dispose();
+    controller.clear();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    const text = 'Leave a comment, why are you deleting this contract?';
+    const text = 'comment';
     return SizedBox(
       width: double.infinity,
       height: 370,
@@ -96,7 +96,7 @@ class _SingleContractItemState extends State<SingleContractItem> {
                       return AlertDialog(
                         backgroundColor: Constants.darkColor,
                         title: Text(
-                          '$text',
+                          '$text'.tr(),
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
@@ -147,8 +147,8 @@ class _SingleContractItemState extends State<SingleContractItem> {
                                     controller.clear();
                                     Navigator.of(ctx).pop();
                                   },
-                                  child: const Text(
-                                    'Cancel',
+                                  child: Text(
+                                    'cancel'.tr(),
                                     style: TextStyle(color: Color(0xFFFF426D)),
                                   ),
                                 ),
@@ -166,7 +166,9 @@ class _SingleContractItemState extends State<SingleContractItem> {
                                     if (controller.text == '') {
                                       return;
                                     }
-
+                                    BlocProvider.of<ContractsBloc>(context,
+                                            listen: false)
+                                        .isSelected = -1;
                                     Navigator.of(context).pop();
                                     BlocProvider.of<ContractsBloc>(context,
                                             listen: false)
@@ -179,7 +181,7 @@ class _SingleContractItemState extends State<SingleContractItem> {
                                         .add(LoadContracts());
                                     controller.clear();
                                   },
-                                  child: const Text('Done'),
+                                  child: Text('done'.tr()),
                                 ),
                               ),
                             ],

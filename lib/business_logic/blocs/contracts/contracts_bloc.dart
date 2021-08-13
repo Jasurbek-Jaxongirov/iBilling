@@ -9,6 +9,7 @@ part 'contracts_event.dart';
 part 'contracts_state.dart';
 
 class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
+  int isSelected = -1;
   bool isClicked = false;
   bool showButton = false;
   String text = '';

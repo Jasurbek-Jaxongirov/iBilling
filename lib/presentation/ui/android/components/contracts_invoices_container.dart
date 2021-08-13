@@ -24,7 +24,7 @@ class ContractsAndIvoicesContainer extends StatefulWidget {
 class _ContractsAndIvoicesContainerState
     extends State<ContractsAndIvoicesContainer> {
   var isClicked = false;
-  var selectedIndex = -1;
+
   @override
   Widget build(BuildContext context) {
     // Contracts
@@ -56,7 +56,8 @@ class _ContractsAndIvoicesContainerState
                   itemBuilder: (_, index) {
                     return GestureDetector(
                       onLongPress: () {
-                        selectedIndex = index;
+                        BlocProvider.of<ContractsBloc>(context, listen: false)
+                            .isSelected = index;
                         isClicked = !isClicked;
                         setState(() {});
                       },
@@ -64,7 +65,11 @@ class _ContractsAndIvoicesContainerState
                         isClicked = false;
                         setState(() {});
                       },
-                      child: selectedIndex == index && isClicked
+                      child: BlocProvider.of<ContractsBloc>(context,
+                                          listen: false)
+                                      .isSelected ==
+                                  index &&
+                              isClicked
                           ? SingleContractItem(contract: state.contracts[index])
                           : ContractItem(
                               contract: state.contracts[index],
@@ -84,7 +89,8 @@ class _ContractsAndIvoicesContainerState
                   itemBuilder: (_, index) {
                     return GestureDetector(
                       onLongPress: () {
-                        selectedIndex = index;
+                        BlocProvider.of<ContractsBloc>(context, listen: false)
+                            .isSelected = index;
                         isClicked = !isClicked;
                         setState(() {});
                       },
@@ -92,12 +98,16 @@ class _ContractsAndIvoicesContainerState
                         isClicked = false;
                         setState(() {});
                       },
-                      child: selectedIndex == index && isClicked
-                          ? SingleContractItem(
-                              contract: state.filteredContracts[index])
-                          : ContractItem(
-                              contract: state.filteredContracts[index],
-                            ),
+                      child:
+                          BlocProvider.of<ContractsBloc>(context, listen: false)
+                                          .isSelected ==
+                                      index &&
+                                  isClicked
+                              ? SingleContractItem(
+                                  contract: state.filteredContracts[index])
+                              : ContractItem(
+                                  contract: state.filteredContracts[index],
+                                ),
                     );
                   });
           } else if (state is FailedToLoadContractsState ||
