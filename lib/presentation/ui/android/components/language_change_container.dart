@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '/business_logic/blocs/localize/localize_bloc.dart';
 import '/presentation/ui/theme/app_constants.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class LanguageChangeContainer extends StatefulWidget {
   const LanguageChangeContainer({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class LanguageChangeContainer extends StatefulWidget {
 class _LanguageChangeContainerState extends State<LanguageChangeContainer> {
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<LocalizeBloc>(context, listen: false).getlang;
     return Container(
       width: double.infinity,
       height: 44,
@@ -23,16 +25,16 @@ class _LanguageChangeContainerState extends State<LanguageChangeContainer> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          Text('lang'.tr() == 'Ingliz tili (AQSh)'
+          Text(bloc == 'uz'
               ? "O'zbek tili"
-              : 'lang'.tr() == 'English(USA)'
+              : bloc == 'en'
                   ? 'English(USA)'
                   : 'Русский'),
           const Spacer(),
           SvgPicture.asset(
-            'lang'.tr() == 'English(USA)'
+            bloc == 'en'
                 ? 'assets/icons/us-flag.svg'
-                : 'lang'.tr() == 'Ingliz tili (AQSh)'
+                : bloc == 'uz'
                     ? 'assets/icons/uzbek-flag.svg'
                     : 'assets/icons/rus-flag.svg',
           ),

@@ -30,24 +30,27 @@ class ContractItem extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const Spacer(),
-              Chip(
-                label: Text(
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  color: contract.contractStatus.tr() == 'paid'.tr()
+                      ? const Color(0XFF49B7A5).withOpacity(0.15)
+                      : contract.contractStatus.tr() == 'in-process'.tr()
+                          ? const Color(0xFFFDAB2A).withOpacity(0.15)
+                          : const Color(0xF85379).withOpacity(0.15),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                child: Text(
                   contract.contractStatus.tr(),
                   style: TextStyle(
-                    color: contract.contractStatus.tr().toLowerCase() ==
-                            'paid'.tr()
+                    color: contract.contractStatus.tr() == 'paid'.tr()
                         ? const Color(0XFF49B7A5)
                         : contract.contractStatus.tr() == 'in-process'.tr()
                             ? const Color(0xFFFDAB2A)
                             : const Color(0xFFFF426D),
                   ),
                 ),
-                backgroundColor:
-                    contract.contractStatus.tr().toLowerCase() == 'paid'.tr()
-                        ? const Color(0XFF49B7A5).withOpacity(0.15)
-                        : contract.contractStatus.tr() == 'in-process'.tr()
-                            ? const Color(0xFFFDAB2A).withOpacity(0.15)
-                            : const Color(0xFFF85379).withOpacity(0.15),
               ),
             ],
           ),

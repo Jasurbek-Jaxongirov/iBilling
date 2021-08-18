@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '/business_logic/blocs/localize/localize_bloc.dart';
 import '/business_logic/blocs/invoice/invoice_bloc.dart';
 import 'business_logic/blocs/history/history_bloc.dart';
 import 'presentation/ui/screens/filters_screen.dart';
@@ -49,6 +50,9 @@ class MyApp extends StatelessWidget {
             ..add(
               InitializeHistoryEvent(),
             ),
+        ),
+        BlocProvider(
+          create: (_) => LocalizeBloc(),
         ),
       ],
       child: MaterialApp(

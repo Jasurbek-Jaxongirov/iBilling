@@ -44,14 +44,17 @@ class _NewsPageState extends State<NewsPage> {
       createdAt: DateTime.now().toIso8601String(),
       organizationItn: int.parse(vatinController.text),
     );
-    BlocProvider.of<ContractsBloc>(context, listen: false).add(
+    BlocProvider.of<ContractsBloc>(context).add(
       AddNewContractEvent(
           contract: BlocProvider.of<ContractsBloc>(context, listen: false)
               .getNewContract),
     );
+    entityValue = null;
+    contractStatusValue = null;
     fullnameController.clear();
     addressController.clear();
     vatinController.clear();
+    BlocProvider.of<ContractsBloc>(context).add(LoadContracts());
   }
 
   @override
@@ -82,7 +85,7 @@ class _NewsPageState extends State<NewsPage> {
               Text('entity'.tr()),
               DropdownButtonFormField<String>(
                 validator: (value) {
-                  if (value == '') {
+                  if (value == '' || value == null) {
                     return 'No Entity is selected! Please, select one...';
                   }
                 },
@@ -91,6 +94,8 @@ class _NewsPageState extends State<NewsPage> {
                 decoration: const InputDecoration(
                     filled: true,
                     contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red)),
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Constants.darkColor))),
                 value: entityValue,
@@ -145,6 +150,10 @@ class _NewsPageState extends State<NewsPage> {
                       color: Constants.darkColor,
                     ),
                   ),
+                  errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                    color: Colors.red,
+                  )),
                   border: OutlineInputBorder(),
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -185,7 +194,7 @@ class _NewsPageState extends State<NewsPage> {
               Text('contract-status'.tr()),
               DropdownButtonFormField<String>(
                 validator: (value) {
-                  if (value == '') {
+                  if (value == '' || value == null) {
                     return 'No status is selected! Please, select one...';
                   }
                   return null;
@@ -194,6 +203,8 @@ class _NewsPageState extends State<NewsPage> {
                 style: Theme.of(context).textTheme.bodyText2,
                 decoration: const InputDecoration(
                     filled: true,
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red)),
                     contentPadding: EdgeInsets.symmetric(horizontal: 20),
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Constants.darkColor))),
@@ -216,27 +227,52 @@ class _NewsPageState extends State<NewsPage> {
                 minWidth: double.infinity,
                 color: Constants.darkGreenColor,
                 onPressed: _saveFrom,
-                child: BlocBuilder<ContractsBloc, ContractsState>(
-                  builder: (_, state) {
-                    if (!(state is AddingNewContract) &&
-                        !(state is AddedNewContract)) {
-                      return Text(
-                        'save_contract'.tr(),
-                        style: Theme.of(context).textTheme.bodyText1,
-                      );
-                    } else if (state is AddingNewContract) {
-                      return const CircularProgressIndicator.adaptive();
-                    } else if (state is AddedNewContract) {
-                      return Text(
-                        'save_contract'.tr(),
-                        style: Theme.of(context).textTheme.bodyText1,
-                      );
-                    } else if (state is FailedToLoadContractsState) {
-                      return Text('${state.error}');
-                    }
-                    return Container();
-                  },
-                ),
+                child: BlocListener<ContractsBloc, ContractsState>(
+                    listener: (_, state) async {
+                      if (state == AddingNewContract()) {
+                        await showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            });
+                      } else if (state is AddedNewContract) {
+                        showDialog(
+                            barrierDismissible: true,
+                            barrierColor:
+                                const Color(0xFF0C0C0C).withOpacity(0.8),
+                            context: context,
+                            builder: (ctx) {
+                              return AlertDialog(
+                                backgroundColor: Constants.darkColor,
+                                content: Text(
+                                  'New Contract has successfully been added',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodyText2,
+                                ),
+                                actions: [
+                                  MaterialButton(
+                                    color: Constants.darkGreenColor
+                                        .withOpacity(0.4),
+                                    onPressed: () {
+                                      Navigator.of(ctx).pop();
+                                    },
+                                    child: Text(
+                                      'Done',
+                                      style:
+                                          Theme.of(context).textTheme.bodyText2,
+                                    ),
+                                  )
+                                ],
+                              );
+                            });
+                      }
+                    },
+                    child: Text(
+                      'save_contract'.tr(),
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )),
               )
             ],
           ),

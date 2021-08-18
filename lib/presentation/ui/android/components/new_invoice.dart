@@ -20,7 +20,6 @@ class _NewInvoiceState extends State<NewInvoice> {
     'rej-by-iq'.tr()
   ];
 
-  String? valueChosen;
   String? invoiceStatusValue;
   TextEditingController serviceController = TextEditingController();
   TextEditingController amountController = TextEditingController();
@@ -42,10 +41,13 @@ class _NewInvoiceState extends State<NewInvoice> {
         invoiceStatus: invoiceStatusValue ?? '',
         serviceName: serviceController.text,
       );
-      serviceController.clear();
-      amountController.clear();
       BlocProvider.of<InvoiceBloc>(context).add(AddNewInvoiceEvent(
           invoice: BlocProvider.of<InvoiceBloc>(context).getNewInvoice));
+      serviceController.clear();
+
+      amountController.clear();
+      invoiceStatusValue = null;
+      BlocProvider.of<InvoiceBloc>(context).add(LoadInvoices());
     }
   }
 
@@ -105,7 +107,7 @@ class _NewInvoiceState extends State<NewInvoice> {
               Text('invoice-status'.tr()),
               DropdownButtonFormField<String>(
                 validator: (value) {
-                  if (value == '') {
+                  if (value == '' || value == null) {
                     return 'Status is empty!';
                   }
                 },
@@ -113,6 +115,8 @@ class _NewInvoiceState extends State<NewInvoice> {
                 style: Theme.of(context).textTheme.bodyText2,
                 decoration: const InputDecoration(
                     filled: true,
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red)),
                     contentPadding: EdgeInsets.symmetric(horizontal: 20),
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Constants.darkColor))),
@@ -132,31 +136,49 @@ class _NewInvoiceState extends State<NewInvoice> {
                 height: 10,
               ),
               MaterialButton(
-                minWidth: double.infinity,
-                color: Constants.darkGreenColor,
-                onPressed: _saveForm,
-                child:
-                    BlocBuilder<InvoiceBloc, InvoiceState>(builder: (_, state) {
-                  if (state is InvoiceInitial ||
-                      state is LoadedInvoicesStates ||
-                      state is FilteredInvoicesByDate) {
-                    return Text(
+                  minWidth: double.infinity,
+                  color: Constants.darkGreenColor,
+                  onPressed: _saveForm,
+                  child: BlocListener<InvoiceBloc, InvoiceState>(
+                    listener: (_, state) {
+                      if (state is AddingNewInvoiceState) {
+                      } else if (state is AddedNewInvoiceState) {
+                        showDialog(
+                            barrierDismissible: true,
+                            barrierColor:
+                                const Color(0xFF0C0C0C).withOpacity(0.8),
+                            context: context,
+                            builder: (ctx) {
+                              return AlertDialog(
+                                backgroundColor: Constants.darkColor,
+                                content: Text(
+                                  'New Invoice has successfully been added',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodyText2,
+                                ),
+                                actions: [
+                                  MaterialButton(
+                                    color: Constants.darkGreenColor
+                                        .withOpacity(0.4),
+                                    onPressed: () {
+                                      Navigator.of(ctx).pop();
+                                    },
+                                    child: Text(
+                                      'Done',
+                                      style:
+                                          Theme.of(context).textTheme.bodyText2,
+                                    ),
+                                  )
+                                ],
+                              );
+                            });
+                      }
+                    },
+                    child: Text(
                       'save_invoice'.tr(),
                       style: Theme.of(context).textTheme.bodyText1,
-                    );
-                  } else if (state is AddingNewInvoiceState) {
-                    return const CircularProgressIndicator.adaptive();
-                  } else if (state is AddedNewInvoiceState) {
-                    return Text(
-                      'save_invoice'.tr(),
-                      style: Theme.of(context).textTheme.bodyText1,
-                    );
-                  } else if (state is FailedToAddNewInvoice) {
-                    return Text('${state.error}');
-                  }
-                  return Container();
-                }),
-              )
+                    ),
+                  ))
             ],
           ),
         ),

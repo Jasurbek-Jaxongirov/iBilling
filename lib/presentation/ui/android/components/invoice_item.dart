@@ -25,24 +25,26 @@ class InvoiceItem extends StatelessWidget {
           Row(
             children: [
               const Spacer(),
-              Chip(
-                label: Text(
+              Container(
+                child: Text(
                   invoice.invoiceStatus.tr(),
                   style: TextStyle(
-                    color:
-                        invoice.invoiceStatus.tr().toLowerCase() == 'paid'.tr()
-                            ? const Color(0XFF49B7A5)
-                            : invoice.invoiceStatus.tr() == 'in-process'.tr()
-                                ? const Color(0xFFFDAB2A)
-                                : const Color(0xFFFF426D),
+                    color: invoice.invoiceStatus.tr() == 'paid'.tr()
+                        ? const Color(0XFF49B7A5)
+                        : invoice.invoiceStatus.tr() == 'in-process'.tr()
+                            ? const Color(0xFFFDAB2A)
+                            : const Color(0xFFFF426D),
                   ),
                 ),
-                backgroundColor:
-                    invoice.invoiceStatus.tr().toLowerCase() == 'paid'.tr()
-                        ? const Color(0XFF49B7A5).withOpacity(0.15)
-                        : invoice.invoiceStatus.tr() == 'in-process'.tr()
-                            ? const Color(0xFFFDAB2A).withOpacity(0.15)
-                            : const Color(0xFFF85379).withOpacity(0.15),
+                decoration: BoxDecoration(
+                  color: invoice.invoiceStatus.tr() == 'paid'.tr()
+                      ? const Color(0XFF49B7A5).withOpacity(0.15)
+                      : invoice.invoiceStatus.tr() == 'in-process'.tr()
+                          ? const Color(0xFFFDAB2A).withOpacity(0.15)
+                          : const Color(0xFFF85379).withOpacity(0.15),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               ),
             ],
           ),

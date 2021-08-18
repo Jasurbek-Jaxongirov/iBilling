@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import '/business_logic/blocs/localize/localize_bloc.dart';
 import '/data/models/user.dart';
 import '/presentation/ui/android/components/profile_container.dart';
 import '/presentation/ui/theme/app_constants.dart';
@@ -16,8 +18,10 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<LocalizeBloc>(context);
     var languageGroup = '';
     final initialLang = context.locale;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       height: double.infinity,
@@ -39,115 +43,164 @@ class _ProfilePageState extends State<ProfilePage> {
           const SizedBox(
             height: 12,
           ),
-          GestureDetector(
-            onTap: () async {
-              await showDialog(
-                  barrierDismissible: true,
-                  barrierColor: const Color(0xFF0C0C0C).withOpacity(0.8),
-                  context: context,
-                  builder: (ctx) {
-                    return AlertDialog(
-                      clipBehavior: Clip.hardEdge,
-                      contentPadding: const EdgeInsets.all(2),
-                      actionsPadding: const EdgeInsets.all(2),
-                      titlePadding: const EdgeInsets.all(15),
-                      backgroundColor: Constants.darkColor,
-                      title: Text(
-                        'choose-lang'.tr(),
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      content: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListTile(
-                            onTap: () {
-                              context.setLocale(const Locale('uz'));
-                              setState(() {
-                                languageGroup = 'uz';
-                              });
-                            },
-                            leading:
-                                SvgPicture.asset('assets/icons/uzbek-flag.svg'),
-                            title: Text(
-                              'O‘zbek (Lotin)',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            trailing: Radio(
-                              value: 'uz',
-                              groupValue: languageGroup,
-                              onChanged: (language) {},
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {
-                              context.setLocale(const Locale('ru'));
-                              setState(() {
-                                languageGroup = 'ru';
-                              });
-                            },
-                            leading:
-                                SvgPicture.asset('assets/icons/rus-flag.svg'),
-                            title: Text(
-                              'Русский',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            trailing: Radio(
-                              value: 'ru',
-                              groupValue: languageGroup,
-                              onChanged: (language) {},
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {
-                              context.setLocale(const Locale('en', 'US'));
-                              setState(() {
-                                languageGroup = 'en';
-                              });
-                            },
-                            leading:
-                                SvgPicture.asset('assets/icons/us-flag.svg'),
-                            title: Text(
-                              'English (USA)',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            trailing: Radio(
-                              value: 'en',
-                              groupValue: languageGroup,
-                              onChanged: (language) {},
-                            ),
-                          ),
-                        ],
-                      ),
-                      actions: [
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                      (states) => Constants.darkGreenColor)),
-                          onPressed: () {
-                            languageGroup = '';
+          BlocConsumer<LocalizeBloc, LocalizeState>(
+            listener: (context, state) async {
+              if (state is LocalizingState) {
+                await showDialog(
+                    barrierDismissible: true,
+                    barrierColor: const Color(0xFF0C0C0C).withOpacity(0.8),
+                    context: context,
+                    builder: (ctx) {
+                      return AlertDialog(
+                        contentPadding: const EdgeInsets.all(2),
+                        actionsPadding: const EdgeInsets.all(2),
+                        titlePadding: const EdgeInsets.all(15),
+                        backgroundColor: Constants.darkColor,
+                        title: Text(
+                          'choose-lang'.tr(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                        actions: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ListTile(
+                                onTap: () {
+                                  // context.setLocale(const Locale('uz'));
 
-                            context.setLocale(initialLang);
-                            Navigator.of(ctx).pop();
-                          },
-                          child: Text('cancel'.tr()),
-                        ),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                      (states) => Constants.darkGreenColor)),
-                          onPressed: () {
-                            Navigator.of(ctx).pop();
-                          },
-                          child: Text('done'.tr()),
-                        ),
-                      ],
-                    );
-                  });
+                                  languageGroup = 'uz';
+                                  bloc.setlang = languageGroup;
+                                  Navigator.of(ctx).pop();
+                                  bloc.add(LocalizationEvent());
+                                },
+                                leading: SvgPicture.asset(
+                                    'assets/icons/uzbek-flag.svg'),
+                                title: Text(
+                                  'O‘zbek (Lotin)',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                trailing: Radio(
+                                  value: 'uz',
+                                  groupValue: bloc.getlang,
+                                  onChanged: (language) {},
+                                ),
+                              ),
+                              ListTile(
+                                onTap: () {
+                                  // context.setLocale(const Locale('ru'));
+
+                                  languageGroup = 'ru';
+                                  bloc.setlang = languageGroup;
+                                  Navigator.of(ctx).pop();
+                                  bloc.add(LocalizationEvent());
+                                },
+                                leading: SvgPicture.asset(
+                                    'assets/icons/rus-flag.svg'),
+                                title: Text(
+                                  'Русский',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                trailing: Radio(
+                                  value: 'ru',
+                                  groupValue: bloc.getlang,
+                                  onChanged: (language) {},
+                                ),
+                              ),
+                              ListTile(
+                                onTap: () {
+                                  languageGroup = 'en';
+
+                                  bloc.setlang = languageGroup;
+                                  Navigator.of(ctx).pop();
+                                  bloc.add(LocalizationEvent());
+                                },
+                                leading: SvgPicture.asset(
+                                    'assets/icons/us-flag.svg'),
+                                title: Text(
+                                  'English (USA)',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                trailing: Radio(
+                                  value: 'en',
+                                  groupValue: bloc.getlang,
+                                  onChanged: (language) {},
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              MaterialButton(
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                minWidth: MediaQuery.of(ctx).size.width * 0.3,
+                                color:
+                                    Constants.darkGreenColor.withOpacity(0.3),
+                                onPressed: () {
+                                  bloc.setlang = initialLang.languageCode;
+                                  context.setLocale(initialLang);
+
+                                  Navigator.of(ctx).pop();
+                                },
+                                child: Text(
+                                  'cancel'.tr(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                          color: Constants.darkGreenColor),
+                                ),
+                              ),
+                              MaterialButton(
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                minWidth: MediaQuery.of(ctx).size.width * 0.3,
+                                color: Constants.darkGreenColor,
+                                onPressed: () {
+                                  Navigator.of(ctx).pop();
+                                  if (bloc.getlang == 'en') {
+                                    context.setLocale(const Locale('en', 'US'));
+                                  }
+                                  if (bloc.getlang == 'ru') {
+                                    context.setLocale(const Locale(
+                                      'ru',
+                                    ));
+                                  }
+                                  if (bloc.getlang == 'uz') {
+                                    context.setLocale(const Locale(
+                                      'uz',
+                                    ));
+                                  }
+                                },
+                                child: Text(
+                                  'done'.tr(),
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    });
+              }
             },
-            child: const LanguageChangeContainer(),
+            builder: (_, state) => InkWell(
+              onTap: () {
+                bloc.add(LocalizationEvent());
+              },
+              child: LanguageChangeContainer(),
+            ),
           ),
         ],
       ),

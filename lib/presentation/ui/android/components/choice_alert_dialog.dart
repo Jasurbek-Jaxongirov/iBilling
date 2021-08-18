@@ -14,7 +14,7 @@ class ChoiceAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       titlePadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      actionsPadding: const EdgeInsets.symmetric(horizontal: 20),
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 10),
       backgroundColor: Constants.darkColor,
       title: Text(
         'choose-create'.tr(),
@@ -26,7 +26,11 @@ class ChoiceAlertDialog extends StatelessWidget {
       ),
       actions: [
         MaterialButton(
-          color: const Color(0xFF4E4E4E),
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          elevation: 0,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(4))),
+          color: const Color(0xFF4E4E4E).withOpacity(0.4),
           onPressed: () {
             Constants.titles[2] = 'New Contract';
             Constants.pages[2] = const NewsPage();
@@ -34,7 +38,9 @@ class ChoiceAlertDialog extends StatelessWidget {
           },
           child: Row(
             children: [
-              SvgPicture.asset('assets/icons/contract-paper.svg'),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: SvgPicture.asset('assets/icons/contract-paper.svg')),
               Text(
                 'contract'.tr(),
                 style: Theme.of(context).textTheme.headline5,
@@ -43,7 +49,11 @@ class ChoiceAlertDialog extends StatelessWidget {
           ),
         ),
         MaterialButton(
-          color: const Color(0xFF4E4E4E),
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          elevation: 0,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(4))),
+          color: const Color(0xFF4E4E4E).withOpacity(0.4),
           onPressed: () {
             Constants.pages[2] = const NewInvoice();
             Constants.titles[2] = 'New Invoice';
@@ -51,7 +61,12 @@ class ChoiceAlertDialog extends StatelessWidget {
           },
           child: Row(
             children: [
-              SvgPicture.asset('assets/icons/invoice-paper.svg'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: SvgPicture.asset(
+                  'assets/icons/invoice-paper.svg',
+                ),
+              ),
               Text(
                 'invoice'.tr(),
                 style: Theme.of(context).textTheme.headline5,

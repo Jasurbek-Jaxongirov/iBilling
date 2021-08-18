@@ -149,7 +149,8 @@ class _SingleContractItemState extends State<SingleContractItem> {
                                   },
                                   child: Text(
                                     'cancel'.tr(),
-                                    style: TextStyle(color: Color(0xFFFF426D)),
+                                    style: const TextStyle(
+                                        color: Color(0xFFFF426D)),
                                   ),
                                 ),
                               ),
